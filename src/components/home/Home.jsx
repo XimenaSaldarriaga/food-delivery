@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-const home = () => {
+const Home = () => {
 
    const taskState = useSelector(state => state.tasks)
    console.log(taskState)
@@ -15,4 +15,4 @@ const home = () => {
   )
 }
 
-export default home
+export default Home
