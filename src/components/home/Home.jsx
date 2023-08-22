@@ -1,7 +1,11 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { useSelector } from 'react-redux'
+import { context } from '../../context/AuthContext'
 
 const Home = () => {
+
+  const authContext = useContext(context);
+  console.log(authContext)
 
    const taskState = useSelector(state => state.tasks)
    console.log(taskState)
