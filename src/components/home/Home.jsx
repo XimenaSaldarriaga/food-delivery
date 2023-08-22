@@ -7,7 +7,11 @@ const home = () => {
    console.log(taskState)
 
   return (
-    <div>home</div>
+    <div>
+          <h1 className="text-3xl font-bold underline">
+      Hello world!
+    </h1>
+    </div>
   )
 }
 
