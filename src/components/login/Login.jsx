@@ -12,7 +12,7 @@ const Login = () => {
         <div className="flex flex-col justify-center items-center text-center gap-4" >
           <img src={logo} alt="" />
           <h1 className='login__title'>Sign in</h1>
-          <p className='login__text'>Login or create an account with your phone number to start ordering</p>
+          <p className='login__text w-60'>Login or create an account with your phone number to start ordering</p>
         </div>
 
         <div>

@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+
+.check {
+
+    font-family: 'Roboto';
+
+    &__title {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    &__text {
+        font-size: 14px;
+    }
+
+    &__span {
+        font-weight: 600;
+    }
+}
