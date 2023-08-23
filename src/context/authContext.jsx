@@ -1,18 +1,26 @@
-import React, { createContext } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { createContext, useContext } from 'react';
 
+export const authContext = createContext();
 
-export const context = createContext();
+export const useAuth = () => {
+  const context = useContext(authContext);
+  return context;
+}
 
-export const AuthProvider = ({ children }) => {
-
-    const user = {
-        login: true,
+export function AuthProvider({ children }) {
+  const signUp = async (email, password, auth) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      console.log('User created successfully');
+    } catch (error) {
+      console.error('Error creating user:', error);
     }
+  }
 
-
-    return (
-        <context.Provider value={{ user }}>
-            {children}
-        </context.Provider>
-    );
+  return (
+    <authContext.Provider value={{ signUp }}>
+      {children}
+    </authContext.Provider>
+  );
 };

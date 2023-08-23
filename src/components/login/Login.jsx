@@ -31,7 +31,7 @@ const Login = () => {
           <span>Terms of use</span>
         </div>
 
-        <button className='login__button p-2 cursor-pointer'>Login</button>
+        <button className='login__button bg-yellow-300 p-2 cursor-pointer'>Login</button>
       </div>
 
 
