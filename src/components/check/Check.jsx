@@ -6,7 +6,7 @@ import './check.scss';
 const Check = () => {
   return (
     <div className='check flex flex-col justify-between h-screen'>
-      <div className='flex flex-col justify-center items-center text-center gap-4 mt-20'>
+      <div className='flex flex-col justify-center items-center text-center gap-4 mt-10'>
         <img src={logo} alt="" />
         <h1 className='check__title'>Verification</h1>
         <p className=' check__text w-60'>Enter the four-digit code from SMS
