@@ -7,6 +7,7 @@ import { AuthProvider } from '../context/AuthContext';
 import Check from '../components/check/Check';
 import Search from '../components/search/Search';
 import Orders from '../components/orders/Orders';
+import Profile from '../components/profile/Profile';
 
 const Router = () => {
     return (
@@ -19,6 +20,7 @@ const Router = () => {
                 <Route path="/check" element={<Check />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/orders" element={<Orders />} />
+                <Route path="/profile" element={<Profile />} />
             </Routes>
         </BrowserRouter>
         </AuthProvider>
