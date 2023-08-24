@@ -21,51 +21,51 @@ const Profile = () => {
                 <span className='text-[14px] font-semibold'>Jenny Wilson</span>
             </div>
 
-            <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-4 text-[14px] font-semibold'>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2 text-[14px]'>
+                    <div className='flex gap-2'>
                         <img className='object-contain' src={account} alt="" />
                         <button>Account edit</button>
                     </div>
                     <img className='w- object-contain w-[7px]' src={next} alt="" />
                 </div>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2 text-[14px]'>
+                    <div className='flex gap-2  '>
                         <img className='object-contain' src={alarm} alt="" />
                         <button>Account edit</button>
                     </div>
                     <img className='w- object-contain w-[16px]' src={switcher} alt="" />
                 </div>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2 text-[14px]'>
+                    <div className='flex gap-2'>
                         <img className='object-contain' src={coin} alt="" />
                         <button>Payment</button>
                     </div>
                     <img className='w- object-contain w-[7px]' src={next} alt="" />
                 </div>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2 text-[14px]'>
+                    <div className='flex gap-2'>
                         <img className='object-contain' src={languaje} alt="" />
                         <button>Language</button>
                     </div>
                     <img className='w- object-contain w-[7px]' src={next} alt="" />
                 </div>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2 text-[14px]'>
+                    <div className='flex gap-2 '>
                         <img className='object-contain' src={location} alt="" />
                         <button>Location</button>
                     </div>
-                    <img className='w- object-contain w-[7px]' src={next} alt="" />
+                    <span className='text-[10px] text-gray-400'>Eng</span>
                 </div>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2 text-[14px]'>
+                    <div className='flex gap-2'>
                         <img className='object-contain' src={faq} alt="" />
                         <button>FAQ</button>
                     </div>
                     <img className='w- object-contain w-[7px]' src={next} alt="" />
                 </div>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2 text-[14px]'>
+                    <div className='flex gap-2 '>
                         <img className='object-contain' src={call} alt="" />
                         <button>Support</button>
                     </div>
