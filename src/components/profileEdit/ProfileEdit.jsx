@@ -44,6 +44,8 @@ const ProfileEdit = () => {
                     <img className='w- object-contain' src={edit} alt="" />
                 </div>
             </div>
+
+            <button className='profileEdit__button text-[14px] font-semibold rounded-md bg-yellow-300 p-2 cursor-pointer'>Save</button>
         </div>
     )
 }
