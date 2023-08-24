@@ -1,10 +1,11 @@
 import React from 'react';
 import search from '../../assets/SearchGray.png';
 import recent from '../../assets/recent.png';
+import './search.scss'
 
 const Search = () => {
   return (
-    <div className='flex flex-col gap-4 my-10 mx-5'>
+    <div className='search flex flex-col gap-4 my-10 mx-5'>
       <div className='relative'>
         <input
           className='bg-gray-100 w-full rounded-md px-5 py-2 text-[14px]'
