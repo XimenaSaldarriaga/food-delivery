@@ -12,7 +12,7 @@ import stars from '../../assets/Stars.png';
 
 const Restaurant = () => {
     return (
-        <div className='restaurant flex flex-col my-10 mx-6'>
+        <div className='restaurant flex flex-col my-5 mx-6'>
             <img className='object-contain w-[8px]' src={back} alt="" />
 
             <div className='flex flex-col gap-10'>
@@ -38,33 +38,33 @@ const Restaurant = () => {
                         <button className='bg-gray-100 px-5 py-2 w-[120px] rounded-[5px]'>All</button>
                         <button className='bg-yellow-300 px-5 py-2 w-[120px] rounded-[5px]'>Salates</button>
                         <button className='bg-gray-100 px-5 py-2 w-[120px] rounded-[5px]'>Pizza</button>
-                    </div>150
+                    </div>
 
                 </div>
 
                 <div className='flex flex-wrap justify-between gap-8'>
-                    <div className='restaurant__card flex flex-col gap-1'>
+                    <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
                         <img className='rounded-md w-[130px]' src={dish1} alt="" />
                         <div>
-                            <p className='text-[14px] font-semibold'>Bolognese salad</p>
+                            <p className='text-[14px] font-semibold'>Caesar salad without sauce</p>
                             <span className='text-gray-400 text-[14px]'>$ 14.45</span>
                         </div>
                     </div>
-                    <div className='restaurant__card flex flex-col gap-1'>
+                    <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
                         <img className='rounded-md w-[130px]' src={dish2} alt="" />
                         <div>
-                            <p className='text-[14px] font-semibold'>Bolognese salad</p>
+                            <p className='text-[14px] font-semibold'>Fruit salad</p>
                             <span className='text-gray-400 text-[14px]'>$ 14.45</span>
                         </div>
                     </div>
-                    <div className='restaurant__card flex flex-col gap-1'>
+                    <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
                         <img className='rounded-md w-[130px]' src={dish3} alt="" />
                         <div>
-                            <p className='text-[14px] font-semibold'>Bolognese salad</p>
+                            <p className='text-[14px] font-semibold'>Salad with shrimp</p>
                             <span className='text-gray-400 text-[14px]'>$ 14.45</span>
                         </div>
                     </div>
-                    <div className='restaurant__card flex flex-col gap-1'>
+                    <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
                         <img className='rounded-md w-[130px]' src={dish4} alt="" />
                         <div>
                             <p className='text-[14px] font-semibold'>Bolognese salad</p>

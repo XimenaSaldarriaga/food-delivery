@@ -10,6 +10,7 @@ import Orders from '../components/orders/Orders';
 import Profile from '../components/profile/Profile';
 import ProfileEdit from '../components/profileEdit/ProfileEdit';
 import Restaurant from '../components/restaurant/Restaurant';
+import Product from '../components/product/Product';
 
 const Router = () => {
     return (
@@ -25,6 +26,7 @@ const Router = () => {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/profile-edit" element={<ProfileEdit />} />
                 <Route path="/restaurant" element={<Restaurant />} />
+                <Route path="/product" element={<Product />} />
             </Routes>
         </BrowserRouter>
         </AuthProvider>
