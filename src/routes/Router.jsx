@@ -8,6 +8,7 @@ import Check from '../components/check/Check';
 import Search from '../components/search/Search';
 import Orders from '../components/orders/Orders';
 import Profile from '../components/profile/Profile';
+import ProfileEdit from '../components/profileEdit/ProfileEdit';
 
 const Router = () => {
     return (
@@ -21,6 +22,7 @@ const Router = () => {
                 <Route path="/search" element={<Search />} />
                 <Route path="/orders" element={<Orders />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/profile-edit" element={<ProfileEdit />} />
             </Routes>
         </BrowserRouter>
         </AuthProvider>
