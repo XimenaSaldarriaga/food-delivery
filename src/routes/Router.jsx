@@ -6,6 +6,7 @@ import Register from '../components/register/Register';
 import { AuthProvider } from '../context/AuthContext';
 import Check from '../components/check/Check';
 import Search from '../components/search/Search';
+import Orders from '../components/orders/Orders';
 
 const Router = () => {
     return (
@@ -17,6 +18,7 @@ const Router = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/check" element={<Check />} />
                 <Route path="/search" element={<Search />} />
+                <Route path="/orders" element={<Orders />} />
             </Routes>
         </BrowserRouter>
         </AuthProvider>
