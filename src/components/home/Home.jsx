@@ -9,8 +9,6 @@ import orders from '../../assets/Orders.png';
 import profile from '../../assets/Profile.png';
 import hamburger from '../../assets/hamburger.png';
 import pizza from '../../assets/pizza.png';
-import restaurant1 from '../../assets/restaurant1.png';
-import stars from '../../assets/Stars.png';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import './home.scss'
 import { useState } from 'react';
@@ -19,6 +17,7 @@ import { FirebaseError } from 'firebase/app';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { FaStar } from 'react-icons/fa';
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -89,15 +88,37 @@ const Home = () => {
         </button>
       </div>
 
-      <div className='flex gap-5 items-center'>
-        <img className='rounded-md' src={restaurant1} alt="" />
+      <div className='flex gap-5 items-center menuContainer' >
+        {restaurants.map((restaurant, index) => (
+          <div key={index} className='flex gap-5 items-center'>
+            <img className='rounded-md w-[130px]' src={restaurant.poster} alt={restaurant.name} />
 
-        <div>
-          <p className='text-[14px] font-bold'>Pardes Restaurant</p>
-          <img src={stars} alt="" />
-          <p className='text-[14px]'>Work time 09:30 - 23:00</p>
-          <p className='text-[10px]'>Before you 4$</p>
-        </div>
+            <div>
+              <p className='text-[14px] font-bold'>{restaurant.name}</p>
+              <div className="stars">
+                {Array.from({ length: 5 }).map((_, starIndex) => {
+                  const starFraction = restaurant.rating - starIndex;
+                  let starClass = "star-icon-empty";
+
+                  if (starFraction >= 0.5) {
+                    starClass = "star-icon-filled";
+                  } else if (starFraction > 0) {
+                    starClass = "star-icon-half-filled";
+                  }
+
+                  return (
+                    <span key={starIndex} className="star-icon">
+                      <FaStar className={starClass} />
+                    </span>
+                  );
+                })}
+              </div>
+
+              <p className='text-[14px]'> Work time: {restaurant.workTime}</p>
+              <p className='text-[10px]'>Before you {restaurant.price}$</p>
+            </div>
+          </div>
+        ))}
 
       </div>
 
