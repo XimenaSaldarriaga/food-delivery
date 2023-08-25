@@ -26,3 +26,38 @@
     object-fit: cover;
     border-radius: 8px;
 }
+
+.menuContainer {
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.stars {
+    display: flex;
+
+}
+
+.star-icon {
+    color: #ccc;
+    font-size: 1.2rem;
+    transition: color 0.2s ease-in-out;
+
+    &-filled {
+        color: yellow;
+    }
+
+    &-half-filled {
+        color: #e9e170;
+        clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+    }
+
+    &-empty {
+        color: #ccc;
+    }
+}
+
+
+
+
