@@ -12,14 +12,39 @@ import hamburger from '../../assets/hamburger.png';
 import pizza from '../../assets/pizza.png';
 import restaurant1 from '../../assets/restaurant1.png';
 import stars from '../../assets/Stars.png';
+import { getFirestore, collection, getDocs } from "firebase/firestore";
 import './home.scss'
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { FirebaseError } from 'firebase/app';
 
 const Home = () => {
+  const [restaurants, setRestaurants] = useState([]);
   const { user } = useAuth();
   console.log(user);
 
   const taskState = useSelector(state => state.tasks);
   console.log(taskState);
+
+  useEffect(() => {
+    // Obtén la instancia de Firestore
+    const db = getFirestore(FirebaseError);
+
+    // Crea una función asincrónica para obtener los datos de la colección de restaurantes
+    const fetchRestaurants = async () => {
+      try {
+        const restaurantsCollection = collection(db, "restaurants");
+        const querySnapshot = await getDocs(restaurantsCollection);
+        const restaurantData = querySnapshot.docs.map((doc) => doc.data());
+        setRestaurants(restaurantData);
+      } catch (error) {
+        console.error("Error fetching restaurants:", error);
+      }
+    };
+
+    fetchRestaurants();  // Llama a la función para obtener los datos al cargar el componente
+  }, []);
+
 
   return (
     <div className='home flex flex-col gap-5 m-4'>
@@ -30,9 +55,14 @@ const Home = () => {
           <p className='flex gap-1 text-[14px] font-bold'>882 Well St, New-York <img className='object-contain' src={arrow} alt="" /></p>
         </div>
       </div>
-      <img className=' rounded-md w-[259px] ' src={today} alt="" />
+      {/* <img className=' rounded-md w-[259px] ' src={today} alt="" /> */}
+      {restaurants.map((restaurant, index) => (
+      <div key={index}>
+        <img className="rounded-md w-[259px]" src={restaurant.image} alt={restaurant.name}/>
+         </div>
+    ))}
       <p className='text-[14px]'>Restaurants and cafes</p>
-
+     
       <div className='flex gap-5'>
         <button className='bg-yellow-300 py-2 w-[150px] rounded-md text-[10px]'>All</button>
         <button className='flex items-center justify-center gap-3 bg-gray-100 w-[150px] rounded-md text-[10px] '>
