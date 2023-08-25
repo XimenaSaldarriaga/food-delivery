@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { useAuth } from '../../context/AuthContext';
 import location from '../../assets/Location.png';
 import arrow from '../../assets/Arrow.png';
-import today from '../../assets/today.png';
 import home from '../../assets/Home.png';
 import search from '../../assets/Search.png';
 import orders from '../../assets/Orders.png';
@@ -17,6 +16,9 @@ import './home.scss'
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { FirebaseError } from 'firebase/app';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -27,10 +29,7 @@ const Home = () => {
   console.log(taskState);
 
   useEffect(() => {
-    // Obtén la instancia de Firestore
     const db = getFirestore(FirebaseError);
-
-    // Crea una función asincrónica para obtener los datos de la colección de restaurantes
     const fetchRestaurants = async () => {
       try {
         const restaurantsCollection = collection(db, "restaurants");
@@ -42,9 +41,16 @@ const Home = () => {
       }
     };
 
-    fetchRestaurants();  // Llama a la función para obtener los datos al cargar el componente
+    fetchRestaurants();
   }, []);
 
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
 
   return (
     <div className='home flex flex-col gap-5 m-4'>
@@ -55,14 +61,22 @@ const Home = () => {
           <p className='flex gap-1 text-[14px] font-bold'>882 Well St, New-York <img className='object-contain' src={arrow} alt="" /></p>
         </div>
       </div>
-      {/* <img className=' rounded-md w-[259px] ' src={today} alt="" /> */}
-      {restaurants.map((restaurant, index) => (
-      <div key={index}>
-        <img className="rounded-md w-[259px]" src={restaurant.image} alt={restaurant.name}/>
-         </div>
-    ))}
+      <br />
+      <div className="carousel-container">
+        <Slider {...settings} className="carousel mx-auto">
+          {restaurants.map((restaurant, index) => (
+            <div key={index} className='carousel-slide'>
+              <img
+                className="carousel-image"
+                src={restaurant.image}
+                alt={restaurant.name}
+              />
+            </div>
+          ))}
+        </Slider>
+      </div>
+      <br />
       <p className='text-[14px]'>Restaurants and cafes</p>
-     
       <div className='flex gap-5'>
         <button className='bg-yellow-300 py-2 w-[150px] rounded-md text-[10px]'>All</button>
         <button className='flex items-center justify-center gap-3 bg-gray-100 w-[150px] rounded-md text-[10px] '>
