@@ -1,7 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
 
-.home {
+.profileEdit {
     font-family: 'Roboto';
     color: #414141;
+
+    &__button {
+        margin-top: 120px;
+        font-family: 'Roboto';
+    }
 
 }
