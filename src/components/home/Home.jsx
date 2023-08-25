@@ -21,6 +21,8 @@ import { FaStar } from 'react-icons/fa';
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
   const { user } = useAuth();
   console.log(user);
 
@@ -77,51 +79,71 @@ const Home = () => {
       <br />
       <p className='text-[14px]'>Restaurants and cafes</p>
       <div className='flex gap-5'>
-        <button className='bg-yellow-300 py-2 w-[150px] rounded-md text-[10px]'>All</button>
-        <button className='flex items-center justify-center gap-3 bg-gray-100 w-[150px] rounded-md text-[10px] '>
-          <img src={hamburger} alt="Pizza" />
+        <button
+          className={`py-2 w-[150px] rounded-md text-[10px] ${selectedCategory === 'All' ? 'bg-yellow-300' : 'bg-gray-100'
+            }`}
+          onClick={() => setSelectedCategory('All')}
+        >
+          All
+        </button>
+        <button
+          className={`flex items-center justify-center gap-3 w-[150px] rounded-md text-[10px] ${selectedCategory === 'Fast Food' ? 'bg-yellow-300' : 'bg-gray-100'
+            }`}
+          onClick={() => setSelectedCategory('Fast Food')}
+        >
+          <img src={hamburger} alt="Fast Food" />
           <span>Fast Food</span>
         </button>
-        <button className='flex items-center justify-center gap-3 bg-gray-100 w-[150px] rounded-md text-[10px]'>
+        <button
+          className={`flex items-center justify-center gap-3 w-[150px] rounded-md text-[10px] ${selectedCategory === 'Pizza' ? 'bg-yellow-300' : 'bg-gray-100'
+            }`}
+          onClick={() => setSelectedCategory('Pizza')}
+        >
           <img src={pizza} alt="Pizza" />
           <span>Pizza</span>
         </button>
       </div>
 
       <div className='flex gap-5 items-center menuContainer' >
-        {restaurants.map((restaurant, index) => (
-          <div key={index} className='flex gap-5 items-center'>
-            <img className='rounded-md w-[130px]' src={restaurant.poster} alt={restaurant.name} />
+        {restaurants.map((restaurant, index) => {
+          if (
+            selectedCategory === 'All' ||
+            (restaurant.categories && restaurant.categories.includes(selectedCategory))
+          ) {
+            return (
+              <div key={index} className='flex gap-5 items-center'>
+                <img className='rounded-md w-[130px]' src={restaurant.poster} alt={restaurant.name} />
 
-            <div>
-              <p className='text-[14px] font-bold'>{restaurant.name}</p>
-              <div className="stars">
-                {Array.from({ length: 5 }).map((_, starIndex) => {
-                  const starFraction = restaurant.rating - starIndex;
-                  let starClass = "star-icon-empty";
+                <div>
+                  <p className='text-[14px] font-bold'>{restaurant.name}</p>
+                  <div className="star">
+                    {Array.from({ length: 5 }).map((_, starIndex) => {
+                      const starFraction = restaurant.rating - starIndex;
+                      let starClass = "star-icon-empty";
 
-                  if (starFraction >= 0.5) {
-                    starClass = "star-icon-filled";
-                  } else if (starFraction > 0) {
-                    starClass = "star-icon-half-filled";
-                  }
+                      if (starFraction >= 0.5) {
+                        starClass = "star-icon-filled";
+                      } else if (starFraction > 0) {
+                        starClass = "star-icon-half-filled";
+                      }
 
-                  return (
-                    <span key={starIndex} className="star-icon">
-                      <FaStar className={starClass} />
-                    </span>
-                  );
-                })}
+                      return (
+                        <span key={starIndex} className="star-icon">
+                          <FaStar className={starClass} />
+                        </span>
+                      );
+                    })}
+                  </div>
+
+                  <p className='text-[14px]'> Work time: {restaurant.workTime}</p>
+                  <p className='text-[10px]'>Before you {restaurant.price}$</p>
+                </div>
               </div>
-
-              <p className='text-[14px]'> Work time: {restaurant.workTime}</p>
-              <p className='text-[10px]'>Before you {restaurant.price}$</p>
-            </div>
-          </div>
-        ))}
-
+            );
+          }
+          return null;
+        })}
       </div>
-
       <div className='flex justify-between fixed bottom-0 left-0 p-4 w-full'>
         <img className='object-contain' src={home} alt="" />
         <img className='object-contain' src={search} alt="" />
