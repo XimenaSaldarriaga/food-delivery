@@ -1,5 +1,6 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth ,createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { createContext, useContext } from 'react';
+import {app} from '../firebase'
 
 export const authContext = createContext();
 
@@ -9,8 +10,9 @@ export const useAuth = () => {
 }
 
 export function AuthProvider({ children }) {
-  const signUp = async (email, password, auth) => {
+  const signUp = async (email, password) => {
     try {
+      const auth = getAuth(app);
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User created successfully');
     } catch (error) {

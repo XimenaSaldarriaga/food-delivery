@@ -23,6 +23,7 @@ const Register = () => {
     event.preventDefault();
 
     const { name, email, password } = formData;
+    console.log(name, email, password);
 
     try {
       await signUp(email, password);
