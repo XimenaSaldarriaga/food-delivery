@@ -1,11 +1,12 @@
 import React from 'react'
 import './restaurant.scss'
 import back from '../../assets/Back.png';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { FaStar } from 'react-icons/fa';
+
 
 const Restaurant = () => {
 
@@ -45,7 +46,7 @@ const Restaurant = () => {
 
         fetchRestaurantDetails();
     }, [id]);
-    
+
     if (!selectedRestaurant) {
         return <div>Loading...</div>;
     }
@@ -110,17 +111,17 @@ const Restaurant = () => {
             <br />
             <div className='flex flex-wrap justify-between gap-8'>
                 {filteredMenuData.map((dish, index) => (
-                    <div className='restaurant__card flex flex-col gap-1 w-[150px]' key={index}>
+                    <Link key={index} to={`/product?id=${dish.name}`} className='restaurant__card flex flex-col gap-1 w-[150px]'>
                         <img className='rounded-md w-[130px]' src={dish.image} alt={dish.name} />
                         <div>
                             <p className='text-[14px] font-semibold'>{dish.name}</p>
                             <span className='text-gray-400 text-[14px]'>$ {dish.price.toFixed(2)}</span>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
-    )
+    );
 }
 
 export default Restaurant;
