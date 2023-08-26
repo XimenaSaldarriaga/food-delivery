@@ -60,11 +60,14 @@ const Restaurant = () => {
     };
 
     const filteredMenuData = selectedCategory === "All" ? menuData : menuData.filter((dish) => dish.category === selectedCategory);
-    
-    const handleDishClick = (dishName) => {
-        navigate(`/product?restaurantId=${id}&restaurantName=${selectedRestaurant.name}&dishName=${dishName}`);
+
+        const handleDishClick = (dishId) => {
+            console.log("Dish ID:", dishId); 
+        navigate(`/product?restaurantId=${id}&restaurantName=${selectedRestaurant.name}&dishId=${dishId}`);
     };
     
+    
+
     return (
         <div className='restaurant flex flex-col my-5 mx-6'>
             <img className='object-contain w-[10px]' src={back} alt="" onClick={goToHome} />
@@ -115,18 +118,18 @@ const Restaurant = () => {
             </div>
             <br />
             <div className='flex flex-wrap justify-between gap-8'>
-            {filteredMenuData.map((dish, index) => (
-                        <div className='restaurant__card flex flex-col gap-1 w-[150px]' key={index}>
-                            <div onClick={() => handleDishClick(dish.name)}>
-                                <img className='rounded-md w-[130px]' src={dish.image} alt={dish.name} />
-                                <div>
-                                    <p className='text-[14px] font-semibold'>{dish.name}</p>
-                                    <span className='text-gray-400 text-[14px]'>$ {dish.price.toFixed(2)}</span>
-                                </div>
+                {filteredMenuData.map((dish, index) => (
+                    <div className='restaurant__card flex flex-col gap-1 w-[150px]' key={index}>
+                 <div onClick={() => handleDishClick(dish.id)}> 
+                            <img className='rounded-md w-[130px]' src={dish.image} alt={dish.name} />
+                            <div>
+                                <p className='text-[14px] font-semibold'>{dish.name}</p>
+                                <span className='text-gray-400 text-[14px]'>$ {dish.price.toFixed(2)}</span>
                             </div>
                         </div>
-                    ))}
-                </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
