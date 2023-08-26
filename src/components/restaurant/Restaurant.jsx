@@ -1,21 +1,20 @@
 import React from 'react'
 import './restaurant.scss'
 import back from '../../assets/Back.png';
-import dish1 from '../../assets/dish1.png';
-import dish2 from '../../assets/dish2.png';
-import dish3 from '../../assets/dish3.png';
-import dish4 from '../../assets/dish4.png';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, collection, getDocs } from "firebase/firestore";
 import { FaStar } from 'react-icons/fa';
 
 const Restaurant = () => {
+
     const { id } = useParams();
     const navigate = useNavigate();
-
+    const [selectedCategory, setSelectedCategory] = useState("All");
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+    const [menuData, setMenuData] = useState([]);
+    const [uniqueCategoriesArray, setUniqueCategoriesArray] = useState([]);
 
     useEffect(() => {
         const fetchRestaurantDetails = async () => {
@@ -26,6 +25,16 @@ const Restaurant = () => {
 
                 if (restaurantDocSnap.exists()) {
                     setSelectedRestaurant(restaurantDocSnap.data());
+                    const menuCollectionRef = collection(db, 'restaurants', id, 'menu');
+                    const menuQuerySnapshot = await getDocs(menuCollectionRef);
+                    const menuData = menuQuerySnapshot.docs.map((doc) => doc.data());
+                    setMenuData(menuData);
+
+                    const uniqueCategories = new Set();
+                    menuData.forEach((dish) => {
+                        uniqueCategories.add(dish.category);
+                    });
+                    setUniqueCategoriesArray(["All", ...uniqueCategories]);
                 } else {
                     console.log('No such document!');
                 }
@@ -36,7 +45,7 @@ const Restaurant = () => {
 
         fetchRestaurantDetails();
     }, [id]);
-
+    
     if (!selectedRestaurant) {
         return <div>Loading...</div>;
     }
@@ -44,6 +53,12 @@ const Restaurant = () => {
     const goToHome = () => {
         navigate(`/`);
     };
+
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(category);
+    };
+
+    const filteredMenuData = selectedCategory === "All" ? menuData : menuData.filter((dish) => dish.category === selectedCategory);
     return (
         <div className='restaurant flex flex-col my-5 mx-6'>
             <img className='object-contain w-[10px]' src={back} alt="" onClick={goToHome} />
@@ -85,49 +100,27 @@ const Restaurant = () => {
                     </div>
                 </div>
                 <div className='flex text-[10px] gap-4'>
-                    <button className='bg-gray-100 px-5 py-2 w-[120px] rounded-[5px]'>All</button>
-                    <button className='bg-yellow-300 px-5 py-2 w-[120px] rounded-[5px]'>Salates</button>
-                    <button className='bg-gray-100 px-5 py-2 w-[120px] rounded-[5px]'>Pizza</button>
+                    {uniqueCategoriesArray.map((category, index) => (
+                        <button className={`bg-gray-100 px-5 py-2 w-[120px] rounded-[5px] ${selectedCategory === category && "bg-yellow-300"}`} key={index} onClick={() => handleCategoryClick(category)}>
+                            {category}
+                        </button>
+                    ))}
                 </div>
-
             </div>
-
+            <br />
             <div className='flex flex-wrap justify-between gap-8'>
-                <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
-                    <img className='rounded-md w-[130px]' src={dish1} alt="" />
-                    <div>
-                        <p className='text-[14px] font-semibold'>Caesar salad without sauce</p>
-                        <span className='text-gray-400 text-[14px]'>$ 14.45</span>
+                {filteredMenuData.map((dish, index) => (
+                    <div className='restaurant__card flex flex-col gap-1 w-[150px]' key={index}>
+                        <img className='rounded-md w-[130px]' src={dish.image} alt={dish.name} />
+                        <div>
+                            <p className='text-[14px] font-semibold'>{dish.name}</p>
+                            <span className='text-gray-400 text-[14px]'>$ {dish.price.toFixed(2)}</span>
+                        </div>
                     </div>
-                </div>
-                <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
-                    <img className='rounded-md w-[130px]' src={dish2} alt="" />
-                    <div>
-                        <p className='text-[14px] font-semibold'>Fruit salad</p>
-                        <span className='text-gray-400 text-[14px]'>$ 14.45</span>
-                    </div>
-                </div>
-                <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
-                    <img className='rounded-md w-[130px]' src={dish3} alt="" />
-                    <div>
-                        <p className='text-[14px] font-semibold'>Salad with shrimp</p>
-                        <span className='text-gray-400 text-[14px]'>$ 14.45</span>
-                    </div>
-                </div>
-                <div className='restaurant__card flex flex-col gap-1 w-[150px]'>
-                    <img className='rounded-md w-[130px]' src={dish4} alt="" />
-                    <div>
-                        <p className='text-[14px] font-semibold'>Bolognese salad</p>
-                        <span className='text-gray-400 text-[14px]'>$ 14.45</span>
-                    </div>
-                </div>
+                ))}
             </div>
-
-
-
-
         </div>
     )
 }
 
-export default Restaurant
+export default Restaurant;
