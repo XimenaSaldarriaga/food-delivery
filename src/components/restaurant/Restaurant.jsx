@@ -9,13 +9,15 @@ import dish3 from '../../assets/dish3.png';
 import dish4 from '../../assets/dish4.png';
 import restaurant1 from '../../assets/restaurant1.png';
 import stars from '../../assets/Stars.png';
-import { useParams } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const Restaurant = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+  
     const [selectedRestaurant, setSelectedRestaurant] = useState(null);
    
     useEffect(() => {
@@ -42,11 +44,13 @@ const Restaurant = () => {
         return <div>Loading...</div>;
       }
 
+      const goToHome = () => {
+        navigate(`/`);
+   };
     return (
         <div className='restaurant flex flex-col my-5 mx-6'>
-            <img className='object-contain w-[8px]' src={back} alt="" />
-
-            <div className='flex flex-col gap-10'>
+          <img className='object-contain w-[8px]' src={back} alt="" onClick={goToHome} />
+           <div className='flex flex-col gap-10'>
                 <div className='flex flex-col gap-4'>
                     <div className='flex gap-2 justify-center'>
                         {/* <img className='object-contain' src={chef} alt="" /> */}
