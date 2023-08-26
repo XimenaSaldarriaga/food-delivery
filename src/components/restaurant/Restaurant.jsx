@@ -9,8 +9,39 @@ import dish3 from '../../assets/dish3.png';
 import dish4 from '../../assets/dish4.png';
 import restaurant1 from '../../assets/restaurant1.png';
 import stars from '../../assets/Stars.png';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 
 const Restaurant = () => {
+    const { id } = useParams();
+    const [selectedRestaurant, setSelectedRestaurant] = useState(null);
+   
+    useEffect(() => {
+        const fetchRestaurantDetails = async () => {
+          try {
+            const db = getFirestore();
+            const restaurantDocRef = doc(db, 'restaurants', id);
+            const restaurantDocSnap = await getDoc(restaurantDocRef);
+    
+            if (restaurantDocSnap.exists()) {
+              setSelectedRestaurant(restaurantDocSnap.data());
+            } else {
+              console.log('No such document!');
+            }
+          } catch (error) {
+            console.error('Error fetching restaurant details:', error);
+          }
+        };
+    
+        fetchRestaurantDetails();
+      }, [id]);
+    
+      if (!selectedRestaurant) {
+        return <div>Loading...</div>;
+      }
+
     return (
         <div className='restaurant flex flex-col my-5 mx-6'>
             <img className='object-contain w-[8px]' src={back} alt="" />
@@ -18,18 +49,18 @@ const Restaurant = () => {
             <div className='flex flex-col gap-10'>
                 <div className='flex flex-col gap-4'>
                     <div className='flex gap-2 justify-center'>
-                        <img className='object-contain' src={chef} alt="" />
-                        <img src={logo} alt="" />
+                        {/* <img className='object-contain' src={chef} alt="" /> */}
+                        <img className='object-contain' src={selectedRestaurant.logo} alt="" />
                     </div>
 
                     <div className='flex gap-6'>
-                        <img className='object-contain rounded-[10px]' src={restaurant1} alt="" />
+                        <img className='object-contain rounded-[10px]'src={selectedRestaurant.poster} alt={selectedRestaurant.name} />
                         <div className='flex flex-col gap-1'>
-                            <p className='text-[14px] font-semibold'>Pardes Restaurant</p>
-                            <p className='text-[10px]' >Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1300s,</p>
+                            <p className='text-[14px] font-semibold'>{selectedRestaurant.name}</p>
+                            <p className='text-[10px]' >{selectedRestaurant.description}</p>
                             <div className='flex justify-between'>
                                 <img className='object-contain' src={stars} alt="" />
-                                <span className='text-[10px] bg-gray-100 px-1'>15-20 min</span>
+                                <span className='text-[10px] bg-gray-100 px-1'>{selectedRestaurant.deliveryTime}</span>
                             </div>
                         </div>
                     </div>

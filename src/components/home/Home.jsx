@@ -18,16 +18,20 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaStar } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
+
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const navigate = useNavigate();
 
   const { user } = useAuth();
   console.log(user);
 
   const taskState = useSelector(state => state.tasks);
   console.log(taskState);
+  
 
   useEffect(() => {
     const db = getFirestore(FirebaseError);
@@ -35,15 +39,24 @@ const Home = () => {
       try {
         const restaurantsCollection = collection(db, "restaurants");
         const querySnapshot = await getDocs(restaurantsCollection);
-        const restaurantData = querySnapshot.docs.map((doc) => doc.data());
+        const restaurantData = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          data.id = doc.id; 
+          return data;
+        });
         setRestaurants(restaurantData);
       } catch (error) {
         console.error("Error fetching restaurants:", error);
       }
     };
-
+  
     fetchRestaurants();
   }, []);
+  
+
+  const handleRestaurantClick = (restaurantId) => {
+       navigate(`/restaurant/${restaurantId}`);
+  };
 
   const settings = {
     dots: true,
@@ -66,7 +79,13 @@ const Home = () => {
       <div className="carousel-container">
         <Slider {...settings} className="carousel mx-auto">
           {restaurants.map((restaurant, index) => (
-            <div key={index} className='carousel-slide'>
+          <div
+          key={index}
+          className='carousel-slide'
+          onClick={() => {
+           handleRestaurantClick(restaurant.id);
+          }} 
+        >
               <img
                 className="carousel-image"
                 src={restaurant.image}
@@ -111,7 +130,11 @@ const Home = () => {
             (restaurant.categories && restaurant.categories.includes(selectedCategory))
           ) {
             return (
-              <div key={index} className='flex gap-5 items-center'>
+              <div
+              key={index}
+              className='flex gap-5 items-center'
+              onClick={() => handleRestaurantClick(restaurant.id)} 
+            >
                 <img className='rounded-md w-[130px]' src={restaurant.poster} alt={restaurant.name} />
 
                 <div>
