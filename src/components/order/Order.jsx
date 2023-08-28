@@ -12,10 +12,10 @@ const Order = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { state: locationState = {} } = location;
-    const { dish, selectedIngredients, totalAmount } = locationState;
+    const { dish, selectedIngredients, initialQuantity } = locationState;
     const delivery = 7000;
 
-    const [quantity, setQuantity] = useState(1);
+    const [quantity, setQuantity] = useState(initialQuantity);
 
     const handleBackClick = () => {
         navigate(-1);
@@ -25,8 +25,14 @@ const Order = () => {
         setQuantity(prevQuantity => Math.max(1, prevQuantity + amount));
     };
 
-    const totalProducts = (totalAmount * quantity)
-    const totalOrder = totalProducts + delivery;
+    const AdditionalIngredients = () => {
+        const selectedIngredientsCount = Object.values(selectedIngredients).filter(Boolean).length;
+        return selectedIngredientsCount * 2000;
+    };
+
+    const totalIngredients = AdditionalIngredients() * quantity
+    const totalProducts = dish?.price * quantity;
+    const totalOrder = totalProducts + totalIngredients + delivery;
 
     return (
         <div className='order relative flex flex-col gap-[6rem] m-6 text-[14px] font-semibold'>
@@ -78,7 +84,11 @@ const Order = () => {
             <div className='flex flex-col gap-3'>
                 <div className='flex justify-between'>
                     <span>Products </span>
-                    <span>$ {totalProducts} </span>
+                    <span>$ {totalProducts.toFixed(2)} </span> 
+                </div>
+                <div className='flex justify-between'>
+                    <span> Additional Ingredients </span>
+                   <span>$ {totalIngredients} </span>
                 </div>
                 <div className='flex justify-between'>
                 </div>
