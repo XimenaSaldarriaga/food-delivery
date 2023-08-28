@@ -18,8 +18,8 @@ const Router = () => {
         <AuthProvider>
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/" element={<Login />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/check" element={<Check />} />
                 <Route path="/search" element={<Search />} />
