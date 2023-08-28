@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { auth, signInWithEmailAndPassword } from '../../firebase';
+import { useAuth } from '../../context/AuthContext';
 import logo from '../../assets/Logo.png'
 import './login.scss';
 import Swal from 'sweetalert2';
@@ -10,12 +10,12 @@ const Login = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const { signIn } = useAuth();
 
   const onSubmit = async (data) => {
     const { email, password } = data;
-
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signIn(email, password);
       console.log('User logged in successfully');
       navigate('/home');
       Swal.fire({
