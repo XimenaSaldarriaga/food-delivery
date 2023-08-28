@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './order.scss'
 import back from '../../assets/Back.png';
 import next from '../../assets/Next.png';
-import location from '../../assets/Location.png';
+import ubication from '../../assets/Location.png';
 import master from '../../assets/master.png';
 import pay from '../../assets/pay.png';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -10,12 +10,24 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 const Order = () => {
     const navigate = useNavigate();
-const location = useLocation();
-    const { dish, selectedIngredients, quantity, totalAmount } = location.state;
+    const location = useLocation();
+    const { state: locationState = {} } = location;
+    const { dish, selectedIngredients, totalAmount } = locationState;
+    const delivery = 7000;
+
+    const [quantity, setQuantity] = useState(1);
 
     const handleBackClick = () => {
-               navigate(-1);
+        navigate(-1);
     };
+
+    const handleQuantityChange = (amount) => {
+        setQuantity(prevQuantity => Math.max(1, prevQuantity + amount));
+    };
+
+    const totalProducts = (totalAmount * quantity)
+    const totalOrder = totalProducts + delivery;
+
     return (
         <div className='order relative flex flex-col gap-[6rem] m-6 text-[14px] font-semibold'>
 
@@ -26,7 +38,7 @@ const location = useLocation();
                     <h2 className='text-[20px]'>Deliver to</h2>
                     <div className='flex justify-between'>
                         <div className='flex gap-4'>
-                            <img className='object-contain w-5' src={location} alt="" />
+                            <img className='object-contain w-5' src={ubication} alt="" />
                             <p>882 Well St, New-York</p>
                         </div>
                         <img className='object-contain' src={next} alt="" />
@@ -45,15 +57,15 @@ const location = useLocation();
                 <div>
                     <div className='flex justify-between items-center'>
                         <div className='flex gap-4 items-center '>
-                            <img className='w-[44px] h-[44px] object-cover rounded-md' src="https://pizzagiuseppe.ro/wp-content/uploads/2020/03/Pizza-Vegetariana-scaled.jpg" alt="" />
+                            <img className='w-[44px] h-[44px] object-cover rounded-md' src={dish?.image} alt={dish?.name} />
                             <div className='bg-gray-100 w-[40px] flex justify-center gap-4 px-8 rounded-[10px] text-[12px]'>
-                                <button>-</button>
-                                <span>0</span>
-                                <button>+</button>
+                                <button onClick={() => handleQuantityChange(-1)}>-</button>
+                                <span>{quantity}</span>
+                                <button onClick={() => handleQuantityChange(1)}>+</button>
                             </div>
-                            <span>Vegetarian pizza</span>
+                            <span>{dish?.name}</span>
                         </div>
-                        <span className='text-gray-400'>$ 32.00</span>
+                        <span className='text-gray-400'>{`$ ${dish?.price.toFixed(2)}`}</span>
                     </div>
                 </div>
 
@@ -65,17 +77,20 @@ const location = useLocation();
 
             <div className='flex flex-col gap-3'>
                 <div className='flex justify-between'>
-                    <span>Products</span>
-                    <span>60.45$</span>
+                    <span>Products </span>
+                    <span>$ {totalProducts} </span>
+                </div>
+                <div className='flex justify-between'>
                 </div>
                 <div className='flex justify-between'>
                     <span>Delivery</span>
-                    <span>4.5$</span>
+                    <span>$ {delivery} </span>
                 </div>
                 <hr />
+
                 <div className='flex justify-between'>
                     <span>Total</span>
-                    <span className='text-[20px]'>64.95$</span>
+                    <span className='text-[20px]'>$ {totalOrder} </span>
                 </div>
 
                 <button className='bg-yellow-300 w-[100%] rounded-md p-2'>Order</button>
