@@ -13,6 +13,7 @@ import Restaurant from '../components/restaurant/Restaurant';
 import Product from '../components/product/Product';
 import Order from '../components/order/Order';
 import Payment from '../components/payment/Payment';
+import AddCard from '../components/addCard/AddCard';
 
 const Router = () => {
     return (
@@ -31,6 +32,7 @@ const Router = () => {
                 <Route path="/product" element={<Product />} />
                 <Route path="/order" element={<Order />} />
                 <Route path="/payment" element={<Payment />} />
+                <Route path="/card" element={<AddCard />} />
             </Routes>
         </BrowserRouter>
         </AuthProvider>

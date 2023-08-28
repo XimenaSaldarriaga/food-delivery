@@ -4,8 +4,14 @@ import master from '../../assets/master.png'
 import pay from '../../assets/pay.png'
 import back from '../../assets/back.png'
 import eye from '../../assets/eye.png'
+import { useNavigate } from 'react-router-dom'
 
 const Payment = () => {
+
+    const navigate = useNavigate();
+     const goAddCard = () => {
+        navigate('/card')
+     }
     return (
         <div className='payment flex flex-col gap-16 relative mx-6 my-10'>
             <img className='object-contain w-2 absolute top-1 left-2' src={back} alt="" />
@@ -27,7 +33,7 @@ const Payment = () => {
                 </div>
             </div>
 
-            <button className='payment__button bg-yellow-300 py-1 rounded-md'>Add a new card</button>
+            <button onClick={goAddCard} className='payment__button bg-yellow-300 py-1 rounded-md'>Add a new card</button>
 
         </div>
     )
