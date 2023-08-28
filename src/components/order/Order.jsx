@@ -16,6 +16,7 @@ const Order = () => {
     const delivery = 7000;
 
     const [quantity, setQuantity] = useState(initialQuantity);
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
     const handleBackClick = () => {
         navigate(-1);
@@ -33,6 +34,12 @@ const Order = () => {
     const totalIngredients = AdditionalIngredients() * quantity
     const totalProducts = dish?.price * quantity;
     const totalOrder = totalProducts + totalIngredients + delivery;
+
+    const handlePaymentMethodSelect = (method) => {
+        setSelectedPaymentMethod(method);
+    };
+
+    const isOrderButtonDisabled = selectedPaymentMethod === null;
 
     return (
         <div className='order relative flex flex-col gap-[6rem] m-6 text-[14px] font-semibold'>
@@ -54,11 +61,29 @@ const Order = () => {
                 <div className='flex flex-col gap-2'>
                     <h2 className='text-[20px]'>Payment</h2>
                     <div className='flex gap-4'>
-                        <button className=' bg-yellow-300 rounded-md px-6 py-1 items-center w-[100px]'>Cash</button>
-                        <button className='flex gap-1 bg-gray-100 rounded-md px-6 py-1 items-center text-[10px] w-[100px]'><img src={master} alt="" />...2578</button>
-                        <button className='flex  bg-gray-100 rounded-md px-6 py-1 items-center text-[10px] w-[100px]'><img src={pay} alt="" />PayPal</button>
+                        <button
+                            className={`bg-${selectedPaymentMethod === 'Cash' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center w-[100px]`}
+                            onClick={() => handlePaymentMethodSelect('Cash')}
+                        >
+                            Cash
+                        </button>
+                        <button
+                            className={`bg-${selectedPaymentMethod === 'MasterCard' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center text-[10px] w-[100px]`}
+                            onClick={() => handlePaymentMethodSelect('MasterCard')}
+                        >
+                            <img src={master} alt="" />
+                            ...2578
+                        </button>
+                        <button
+                            className={`bg-${selectedPaymentMethod === 'PayPal' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center text-[10px] w-[100px]`}
+                            onClick={() => handlePaymentMethodSelect('PayPal')}
+                        >
+                            <img src={pay} alt="" />
+                            PayPal
+                        </button>
                     </div>
                 </div>
+
 
                 <div>
                     <div className='flex justify-between items-center'>
@@ -84,26 +109,27 @@ const Order = () => {
             <div className='flex flex-col gap-3'>
                 <div className='flex justify-between'>
                     <span>Products </span>
-                    <span>$ {totalProducts.toFixed(2)} </span> 
+                    <span>$ {totalProducts.toFixed(2)} </span>
                 </div>
                 <div className='flex justify-between'>
                     <span> Additional Ingredients </span>
-                   <span>$ {totalIngredients} </span>
-                </div>
-                <div className='flex justify-between'>
+                    <span>$ {totalIngredients} </span>
                 </div>
                 <div className='flex justify-between'>
                     <span>Delivery</span>
                     <span>$ {delivery} </span>
                 </div>
                 <hr />
-
                 <div className='flex justify-between'>
                     <span>Total</span>
                     <span className='text-[20px]'>$ {totalOrder} </span>
                 </div>
-
-                <button className='bg-yellow-300 w-[100%] rounded-md p-2'>Order</button>
+                <button
+                    className={`bg-${isOrderButtonDisabled ? 'gray-300' : 'yellow-300'} w-[100%] rounded-md p-2`}
+                    disabled={isOrderButtonDisabled}
+                >
+                    Order
+                </button>
             </div>
 
         </div>
