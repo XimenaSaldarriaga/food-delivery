@@ -123,7 +123,7 @@ const Home = () => {
         </button>
       </div>
 
-      <div className='flex gap-5 items-center menuContainer' >
+      <div className='flex gap-5 menuContainer' >
         {restaurants.map((restaurant, index) => {
           if (
             selectedCategory === 'All' ||
@@ -158,7 +158,7 @@ const Home = () => {
                     })}
                   </div>
 
-                  <p className='text-[14px]'> Work time: {restaurant.workTime}</p>
+                  <p className='text-[14px]'> Work time: <span className='text-[10px]'>{restaurant.workTime}</span></p>
                   <p className='text-[10px]'>Before you {restaurant.price}$</p>
                 </div>
               </div>

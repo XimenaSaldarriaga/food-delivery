@@ -1,10 +1,21 @@
-import React from 'react'
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { auth, signInWithEmailAndPassword } from '../../firebase';
 import logo from '../../assets/Logo.png'
-import phone from '../../assets/phone.png'
-import './login.scss'
-
 
 const Login = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log('User logged in successfully');
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+  };
   return (
     <div className="login flex flex-col">
 
@@ -15,28 +26,42 @@ const Login = () => {
           <p className='login__text w-60'>Login or create an account with your phone number to start ordering</p>
         </div>
 
-        <div>
-          <div className='flex gap-2'>
-            <img className='object-contain' src={phone} alt="" />
-            <span className='text-gray-400'>+1</span>
+        <form className='login__form' onSubmit={handleSubmit(onSubmit)}>
+          <div className='flex flex-col gap-6'>
+            <div className='flex flex-col'>
+              <label className='text-gray-400 login__label'>EMAIL</label>
+              <input
+                type="email"
+                name="email"
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /\S+@\S+\.\S+/,
+                    message: 'Invalid email format',
+                  },
+                })}
+                className="login__input"
+              />
+              {errors.email && <span className="error" style={{ color: 'red', fontSize: '10px' }}>{errors.email.message}</span>}
+            </div>
+            <div className='flex flex-col'>
+              <label className='text-gray-400 login__label'>PASSWORD</label>
+              <input
+                type="password"
+                name="password"
+                {...register('password', {
+                  required: 'Password is required',
+                })}
+                className="login__input"
+              />
+              {errors.password && <span className="error" style={{ color: 'red', fontSize: '10px' }}>{errors.password.message}</span>}
+            </div>
           </div>
-          <hr className='border-yellow-300' />
-        </div>
+          <button className='login__button bg-yellow-300 p-2 cursor-pointer' type="submit">Login</button>
+        </form>
       </div>
-
-
-      <div className='login__divDown flex flex-col gap-4'>
-        <div className='login__textDown flex flex-col'>
-          <span>By clicking the button next you accept</span>
-          <span>Terms of use</span>
-        </div>
-
-        <button className='login__button bg-yellow-300 p-2 cursor-pointer'>Login</button>
-      </div>
-
-
     </div>
   );
-};
+}
 
 export default Login;
