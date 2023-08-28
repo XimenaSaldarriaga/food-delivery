@@ -5,13 +5,19 @@ import next from '../../assets/Next.png';
 import location from '../../assets/Location.png';
 import master from '../../assets/master.png';
 import pay from '../../assets/pay.png';
+import { useNavigate } from 'react-router-dom'
 
 const Order = () => {
+
+    const navigate = useNavigate();
+    const goToHome = () => {
+       navigate('/home')
+    }
     return (
         <div className='order relative flex flex-col gap-[6rem] m-6 text-[14px] font-semibold'>
 
             <div className='flex flex-col gap-6'>
-                <img className='absolute left-2 top-1' src={back} alt="" />
+                <img onClick={goToHome} className='absolute left-2 top-1' src={back} alt="" />
                 <h1 className='flex justify-center'>New order</h1>
                 <div className='flex flex-col gap-2'>
                     <h2 className='text-[20px]'>Deliver to</h2>
