@@ -10,13 +10,23 @@ import call from '../../assets/Call.png';
 import next from '../../assets/Next.png';
 import switcher from '../../assets/Switcher.png';
 import Footer from '../footer/Footer';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Profile = () => {
-    return (
-        <div className='profile flex flex-col gap-6 my-10 mx-6'>
 
+    // const navigate = useNavigate();
+
+    // const handleLogout = () => {
+    //     localStorage.removeItem('userId');
+    //     localStorage.removeItem('authenticated');
+    //     navigate('/');
+    //   };
+    
+    return (
+        <div className='profile flex flex-col gap-6 m-6 relative'>
+            {/* <button className='profile__button absolute text-[14px] font-semibold' onClick={handleLogout}>Log out <span>x</span></button> */}
             <div className='flex flex-col items-center'>
                 <img className='rounded-[50%] w-20' src="https://s3-alpha-sig.figma.com/img/c13c/1e24/1e6baeeb9f8d7582f9d06e78b4720cca?Expires=1693785600&Signature=MUyEa2d4xtW4twlnlKMXSdYnv64D50IF-HwjmFxzsTWFFk3JP-MMJUEd66p8x3K9LsxGhVq8u8DjuBOZZ2KVSG3xh5O9AYl1dbkIgy4coV5qOZhafVR6VyOoYKdzcKuMmlpx~OqIxJAAA-pu~4DcLDG8vlkCsG8I8fJHcOBClqnCKo515npK5R6GHJKNoWzQtl52Rs1zg0MxkSMRXmc9bOF5B51cUwykHXJZSh8~KAHDp37IEqPmE0QKNrSBT~ttsAu6H0vJzqKYoBwWDhZgOazA9R11ZsVFFy2Shk~cEl0FIJVhrFFrTq9reV0lkL66RU0K3CHGHILDvca~jNu4cA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4" alt="" />
                 <span className='text-[14px] font-semibold'>Jenny Wilson</span>

@@ -63,6 +63,7 @@ const Home = () => {
     slidesToScroll: 1,
   };
 
+
   return (
     <div className='home flex flex-col gap-5 m-4 mb-20'>
       <div className='flex gap-2'>

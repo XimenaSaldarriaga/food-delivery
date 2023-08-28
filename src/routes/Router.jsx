@@ -14,15 +14,16 @@ import Product from '../components/product/Product';
 import Order from '../components/order/Order';
 import Payment from '../components/payment/Payment';
 import AddCard from '../components/addCard/AddCard';
+import { setIsAuthenticated } from '../redux/taskSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import PrivateRouter from './PrivateRouter.jsx';
 
 const Router = () => {
-
-    const userAuthentication = (localStorage.getItem("authenticated")) || false;
-    const [isAuthenticated, setIsAuthenticated] = useState(userAuthentication);
-    
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  
     useEffect(() => {
-        localStorage.setItem("authenticated", isAuthenticated.toString());
+      localStorage.setItem('authenticated', isAuthenticated);
     }, [isAuthenticated]);
 
     return (
