@@ -3,10 +3,13 @@ import { useAuth } from '../../context/authContext';
 import './register.scss';
 import Swal from 'sweetalert2';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+
   const { signUp } = useAuth();
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
     const { name, email, password } = data;
@@ -19,12 +22,11 @@ const Register = () => {
       
       await signUp(email, password);
       console.log('User registered successfully');
-
+      navigate('/');
       await Swal.fire({
         text: 'You have successfully registered!',
         confirmButtonColor: '#FFE031',
       });
-
       reset();
     } catch (error) {
       console.error('Error registering user:', error);
