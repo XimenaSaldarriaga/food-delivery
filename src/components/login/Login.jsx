@@ -22,7 +22,7 @@ const Login = () => {
         text: 'Welcome!',
         confirmButtonColor: '#FFE031',
       });
-      
+
     } catch (error) {
       console.error('Error logging in:', error);
       Swal.fire({
@@ -31,6 +31,11 @@ const Login = () => {
       });
     }
   };
+
+  const goRegister = () => {
+    navigate('./register')
+  }
+
   return (
 
     <div className="login flex flex-col">
@@ -74,8 +79,8 @@ const Login = () => {
             </div>
             <button className='login__button bg-yellow-300 p-2 cursor-pointer' type="submit">Login</button>
           </div>
-          
         </form>
+        <button className='login__signUp bg-yellow-300 p-2 cursor-pointer' onClick={goRegister}>Sign Up</button>
       </div>
     </div>
   );
