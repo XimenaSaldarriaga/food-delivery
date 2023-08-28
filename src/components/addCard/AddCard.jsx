@@ -14,6 +14,11 @@ const AddCard = () => {
         }
     };
 
+    const goBack = () => { {
+            navigate('/order');
+        }
+    };
+
     const handleInputChange = (event) => {
         const cardName = event.target.form['cardName'].value;
         const cardNumber = event.target.form['cardNumber'].value;
@@ -24,7 +29,7 @@ const AddCard = () => {
 
     return (
         <div className='card flex flex-col gap-10 mx-6 my-10 relative text-[14px]'>
-            <img className='object-contain w-2 absolute top-1 left-2' src={back} alt="" />
+            <img onClick={goBack} className='object-contain w-2 absolute top-1 left-2' src={back} alt="" />
             <h1 className='self-center font-semibold'>Add new card</h1>
             <form className='flex flex-col gap-5'>
                 <input

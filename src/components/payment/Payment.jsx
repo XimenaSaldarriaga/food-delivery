@@ -33,7 +33,7 @@ const Payment = () => {
                 </div>
             </div>
 
-            <button onClick={goAddCard} className='payment__button bg-yellow-300 py-1 rounded-md'>Add a new card</button>
+            <button onClick={goAddCard} className='payment__button bg-yellow-300 py-1 rounded-md font-semibold'>Add a new card</button>
 
         </div>
     )
