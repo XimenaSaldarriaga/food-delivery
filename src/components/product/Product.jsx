@@ -91,7 +91,18 @@ const Product = () => {
         }
     }, [dishDetails, selectedIngredients]);
 
-
+    const handleOrderClick = () => {
+        if (dishDetails) {
+            navigate('/order', {
+                state: {
+                    dish: dishDetails,
+                    selectedIngredients,
+                    quantity,
+                    totalAmount: calculateTotalPrice() * quantity,
+                },
+            });
+        }
+    };
     return (
         <div className='product'>
             <div className='relative'>
@@ -143,7 +154,7 @@ const Product = () => {
                     <button onClick={() => handleQuantityChange(1)}>+</button>
                 </div>
                 <div className='bg-yellow-300 rounded-[5px] flex justify-between items-center w-[50%] px-6 py-1'>
-                    <span className='text-[14px] font-semibold'>Add</span>
+                <span className='text-[14px] font-semibold' onClick={handleOrderClick}> Add </span>
                     <span className='font-semibold'>$ {(calculateTotalPrice() * quantity).toFixed(2)}</span>
                 </div>
             </div>
