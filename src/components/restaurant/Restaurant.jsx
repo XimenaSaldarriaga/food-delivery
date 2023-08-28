@@ -52,7 +52,7 @@ const Restaurant = () => {
     }
 
     const goToHome = () => {
-        navigate(`/`);
+        navigate(`/home`);
     };
 
     const handleCategoryClick = (category) => {

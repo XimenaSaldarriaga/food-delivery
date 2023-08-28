@@ -63,7 +63,7 @@ const Product = () => {
                     const dishData = dishDocSnap.data();
                     setDishDetails(dishData);
 
-                        const initialSelectedIngredients = dishData.ingredients.reduce((acc, _, index) => {
+                    const initialSelectedIngredients = dishData.ingredients.reduce((acc, _, index) => {
                         return {
                             ...acc,
                             [index]: selectedIngredients[index] || false,
@@ -71,7 +71,7 @@ const Product = () => {
                     }, {});
                     setSelectedIngredients(initialSelectedIngredients);
 
-        
+
                     let initialPrice = dishData.price || 0;
                     if (dishData.ingredients) {
                         initialPrice += dishData.ingredients.filter((_, index) => initialSelectedIngredients[index]).length * 2;
@@ -148,16 +148,16 @@ const Product = () => {
                     ))}
                 </div>
                 <div className='flex justify-between'>
-                <div className='bg-gray-100 rounded-[5px] flex justify-between w-[30%] px-3 py-1'>
-                    <button onClick={() => handleQuantityChange(-1)}>-</button>
-                    <span>{quantity}</span>
-                    <button onClick={() => handleQuantityChange(1)}>+</button>
+                    <div className='bg-gray-100 rounded-[5px] flex justify-between w-[30%] px-3 py-1'>
+                        <button onClick={() => handleQuantityChange(-1)}>-</button>
+                        <span>{quantity}</span>
+                        <button onClick={() => handleQuantityChange(1)}>+</button>
+                    </div>
+                    <div className='bg-yellow-300 rounded-[5px] flex justify-between items-center w-[50%] px-6 py-1'>
+                        <span className='text-[14px] font-semibold' onClick={handleOrderClick}> Add </span>
+                        <span className='font-semibold'>$ {(calculateTotalPrice() * quantity).toFixed(2)}</span>
+                    </div>
                 </div>
-                <div className='bg-yellow-300 rounded-[5px] flex justify-between items-center w-[50%] px-6 py-1'>
-                <span className='text-[14px] font-semibold' onClick={handleOrderClick}> Add </span>
-                    <span className='font-semibold'>$ {(calculateTotalPrice() * quantity).toFixed(2)}</span>
-                </div>
-            </div>
             </div>
         </div>
     );
