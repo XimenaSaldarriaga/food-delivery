@@ -12,6 +12,7 @@ import ProfileEdit from '../components/profileEdit/ProfileEdit';
 import Restaurant from '../components/restaurant/Restaurant';
 import Product from '../components/product/Product';
 import Order from '../components/order/Order';
+import Payment from '../components/payment/Payment';
 
 const Router = () => {
     return (
@@ -29,6 +30,7 @@ const Router = () => {
                 <Route path="/restaurant/:id" element={<Restaurant />} />
                 <Route path="/product" element={<Product />} />
                 <Route path="/order" element={<Order />} />
+                <Route path="/payment" element={<Payment />} />
             </Routes>
         </BrowserRouter>
         </AuthProvider>

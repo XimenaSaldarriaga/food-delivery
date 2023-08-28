@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap');
+
+.payment {
+  font-family: 'Roboto';
+  color: #414141; 
+  font-size: 14px;
+
+  &__button {
+    margin-top: 15rem;
+    font-family: 'Roboto';
+    font-size: 14px;
+  }
+
+}
