@@ -97,7 +97,7 @@ const Product = () => {
                 state: {
                     dish: dishDetails,
                     selectedIngredients,
-                    quantity,
+                    initialQuantity: quantity,
                     totalAmount: calculateTotalPrice() * quantity,
                 },
             });
