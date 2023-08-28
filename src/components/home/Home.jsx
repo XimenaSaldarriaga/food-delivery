@@ -31,7 +31,7 @@ const Home = () => {
 
   const taskState = useSelector(state => state.tasks);
   console.log(taskState);
-  
+
 
   useEffect(() => {
     const db = getFirestore(FirebaseError);
@@ -41,7 +41,7 @@ const Home = () => {
         const querySnapshot = await getDocs(restaurantsCollection);
         const restaurantData = querySnapshot.docs.map((doc) => {
           const data = doc.data();
-          data.id = doc.id; 
+          data.id = doc.id;
           return data;
         });
         setRestaurants(restaurantData);
@@ -49,13 +49,13 @@ const Home = () => {
         console.error("Error fetching restaurants:", error);
       }
     };
-  
+
     fetchRestaurants();
   }, []);
-  
+
 
   const handleRestaurantClick = (restaurantId) => {
-       navigate(`/restaurant/${restaurantId}`);
+    navigate(`/restaurant/${restaurantId}`);
   };
 
   const settings = {
@@ -79,13 +79,13 @@ const Home = () => {
       <div className="carousel-container">
         <Slider {...settings} className="carousel mx-auto">
           {restaurants.map((restaurant, index) => (
-          <div
-          key={index}
-          className='carousel-slide'
-          onClick={() => {
-           handleRestaurantClick(restaurant.id);
-          }} 
-        >
+            <div
+              key={index}
+              className='carousel-slide'
+              onClick={() => {
+                handleRestaurantClick(restaurant.id);
+              }}
+            >
               <img
                 className="carousel-image"
                 src={restaurant.image}
@@ -131,10 +131,10 @@ const Home = () => {
           ) {
             return (
               <div
-              key={index}
-              className='flex gap-5 items-center'
-              onClick={() => handleRestaurantClick(restaurant.id)} 
-            >
+                key={index}
+                className='flex gap-5 items-center'
+                onClick={() => handleRestaurantClick(restaurant.id)}
+              >
                 <img className='rounded-md w-[130px]' src={restaurant.poster} alt={restaurant.name} />
 
                 <div>
