@@ -2,6 +2,7 @@ import React from 'react'
 import './orders.scss'
 import right from '../../assets/ArrowRight.png';
 import chef from '../../assets/chef.png';
+import Footer from '../footer/Footer';
 
 const Orders = () => {
     return (
@@ -25,6 +26,7 @@ const Orders = () => {
                 </div>
 
             </div>
+            <Footer />
         </div>
     )
 }

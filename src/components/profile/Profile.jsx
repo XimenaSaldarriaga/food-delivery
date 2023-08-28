@@ -9,6 +9,7 @@ import faq from '../../assets/FAQ.png';
 import call from '../../assets/Call.png';
 import next from '../../assets/Next.png';
 import switcher from '../../assets/Switcher.png';
+import Footer from '../footer/Footer';
 
 
 
@@ -72,6 +73,7 @@ const Profile = () => {
                     <img className='w- object-contain w-[7px]' src={next} alt="" />
                 </div>
             </div>
+            <Footer />
         </div>
     )
 }

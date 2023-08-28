@@ -2,6 +2,7 @@ import React from 'react';
 import search from '../../assets/SearchGray.png';
 import recent from '../../assets/recent.png';
 import './search.scss'
+import Footer from '../footer/Footer';
 
 const Search = () => {
   return (
@@ -24,6 +25,7 @@ const Search = () => {
         <img className='object-contain' src={recent} alt="" />
         <span className='text-[14px] text-gray-400'>Pizza</span>
       </div>
+      <Footer />
     </div>
   );
 }

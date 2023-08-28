@@ -3,10 +3,6 @@ import { useSelector } from 'react-redux';
 import { useAuth } from '../../context/AuthContext';
 import location from '../../assets/Location.png';
 import arrow from '../../assets/Arrow.png';
-import home from '../../assets/Home.png';
-import search from '../../assets/Search.png';
-import orders from '../../assets/Orders.png';
-import profile from '../../assets/Profile.png';
 import hamburger from '../../assets/hamburger.png';
 import pizza from '../../assets/pizza.png';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
@@ -19,6 +15,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
+import Footer from '../footer/Footer';
 
 
 const Home = () => {
@@ -67,7 +64,7 @@ const Home = () => {
   };
 
   return (
-    <div className='home flex flex-col gap-5 m-4'>
+    <div className='home flex flex-col gap-5 m-4 mb-20'>
       <div className='flex gap-2'>
         <div><img src={location} alt="" /></div>
         <div>
@@ -167,12 +164,7 @@ const Home = () => {
           return null;
         })}
       </div>
-      <div className='flex justify-between fixed bottom-0 left-0 p-4 w-full'>
-        <img className='object-contain' src={home} alt="" />
-        <img className='object-contain' src={search} alt="" />
-        <img className='object-contain' src={orders} alt="" />
-        <img className='object-contain' src={profile} alt="" />
-      </div>
+      <Footer />
     </div>
   );
 }
