@@ -24,7 +24,7 @@ const Product = () => {
         if (restaurantId && restaurantName) {
             navigate(`/restaurant/${restaurantId}`, { state: { restaurantName } });
         } else {
-            navigate(`/`);
+                navigate(`/restaurant/${restaurantId}`);
         }
     };
 
