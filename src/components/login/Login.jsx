@@ -1,36 +1,40 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { auth, signInWithEmailAndPassword } from '../../firebase';
 import logo from '../../assets/Logo.png'
 import './login.scss';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import { auth, signInWithEmailAndPassword } from '../../firebase';
+import { useDispatch } from 'react-redux';
+import { setIsAuthenticated } from '../../redux/taskSlice';
 
 const Login = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const onSubmit = async (data) => {
     const { email, password } = data;
-
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      console.log('User logged in successfully');
+      dispatch(setIsAuthenticated(true));
       navigate('/home');
-      Swal.fire({
-        text: 'Welcome!',
-        confirmButtonColor: '#FFE031',
-      });
-
-    } catch (error) {
-      console.error('Error logging in:', error);
-      Swal.fire({
-        text: 'The data does not match',
-        confirmButtonColor: '#FFE031',
-      });
-    }
-  };
+      localStorage.setItem('isAuthenticated', true); //
+    console.log('User logged in successfully');
+    Swal.fire({
+      text: 'Welcome!',
+      confirmButtonColor: '#FFE031',
+    });
+  } catch (error) {
+    console.error('Error logging in:', error);
+    Swal.fire({
+      text: 'The data does not match',
+      confirmButtonColor: '#FFE031',
+    });
+  }
+};
 
   const goRegister = () => {
     navigate('./register')

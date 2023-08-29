@@ -1,6 +1,6 @@
 import { getAuth ,createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { createContext, useContext } from 'react';
-import {app} from '../firebase'
+import { app } from '../firebase'
 
 export const authContext = createContext();
 
@@ -19,6 +19,7 @@ export function AuthProvider({ children }) {
       console.error('Error creating user:', error);
     }
   }
+
 
   return (
     <authContext.Provider value={{ signUp }}>
