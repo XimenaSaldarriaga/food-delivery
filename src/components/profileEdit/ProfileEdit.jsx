@@ -3,12 +3,19 @@ import './profileEdit.scss'
 import edit from '../../assets/Edit.png';
 import back from '../../assets/Back.png';
 import camera from '../../assets/Camera.png';
+import { useNavigate } from 'react-router-dom';
 
 const ProfileEdit = () => {
+
+    const navigate = useNavigate();
+    const handleBackToProfile = () => {
+        navigate(-1);
+    };
+
     return (
         <div className='profileEdit flex flex-col gap-6 my-10 mx-6'>
 
-            <img className='object-contain w-[8px]' src={back} alt="" />
+            <img onClick={handleBackToProfile} className='object-contain w-[8px]' src={back} alt=""  />
 
             <div className='flex flex-col items-center gap-3'>
                 <h1 className='text-[14px] font-semibold'>Profile</h1>
