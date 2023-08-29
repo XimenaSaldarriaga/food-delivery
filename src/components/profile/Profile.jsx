@@ -26,6 +26,10 @@ const Profile = () => {
         localStorage.removeItem('isAuthenticated');
         navigate('/');
       };
+
+      const handleEditProfile = () => {
+        navigate('/profile-edit');
+      };
     
     return (
         <div className='profile flex flex-col gap-6 m-6 relative'>
@@ -36,12 +40,12 @@ const Profile = () => {
             </div>
 
             <div className='flex flex-col gap-4 text-[14px] font-semibold'>
-                <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
-                    <div className='flex gap-2'>
+                <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between' >
+                    <div className='flex gap-2' >
                         <img className='object-contain' src={account} alt="" />
-                        <button>Account edit</button>
+                        <button >Account edit </button>
                     </div>
-                    <img className='w- object-contain w-[7px]' src={next} alt="" />
+                    <img className='w- object-contain w-[7px]' src={next} alt="" onClick={handleEditProfile}/>
                 </div>
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
                     <div className='flex gap-2  '>
@@ -91,4 +95,4 @@ const Profile = () => {
     )
 }
 
-export default Profile
+export default Profile;
