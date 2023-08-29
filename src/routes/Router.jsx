@@ -4,7 +4,6 @@ import Home from '../components/home/Home';
 import Login from '../components/login/Login';
 import Register from '../components/register/Register';
 import { AuthProvider } from '../context/authContext';
-import Check from '../components/check/Check';
 import Search from '../components/search/Search';
 import Orders from '../components/orders/Orders';
 import Profile from '../components/profile/Profile';
@@ -34,7 +33,6 @@ const Router = () => {
                     <Route path="/register" element={<Register />} />
                     <Route element={<PrivateRouter isAuthenticated={isAuthenticated} />}>
                         <Route path="/home" element={<Home  />} />
-                        <Route path="/check" element={<Check  />} />
                         <Route path="/search" element={<Search  />} />
                         <Route path="/orders" element={<Orders  />} />
                         <Route path="/profile" element={<Profile  />} />

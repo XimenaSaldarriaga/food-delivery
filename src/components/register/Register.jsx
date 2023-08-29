@@ -55,9 +55,9 @@ const Register = () => {
   return (
 
     <div className='register flex flex-col '>    
-     <img onClick={goToLogin} className='absolute left-5 ' src={back} alt="" />
-        <h2 className='register__title'> Create account </h2>
-        <form className='flex flex-col gap-80' onSubmit={handleSubmit(onSubmit)}>
+     <img onClick={goToLogin} className='absolute top-[3.3rem] ' src={back} alt="" />
+        <h2 className='register__title self-center'> Create account </h2>
+        <form className='flex flex-col gap-12' onSubmit={handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-6'>
           <div className='flex flex-col'>
             <label className='text-gray-400 register__label'>NAME</label>

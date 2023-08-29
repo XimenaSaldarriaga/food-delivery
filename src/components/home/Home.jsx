@@ -135,7 +135,7 @@ const Home = () => {
               >
                 <img className='rounded-md w-[130px]' src={restaurant.poster} alt={restaurant.name} />
 
-                <div>
+                <div className='flex flex-col gap-1'>
                   <p className='text-[14px] font-bold'>{restaurant.name}</p>
                   <div className="star">
                     {Array.from({ length: 5 }).map((_, starIndex) => {

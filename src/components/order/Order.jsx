@@ -8,7 +8,7 @@ import pay from '../../assets/pay.png';
 import { useLocation, useNavigate } from 'react-router-dom'
 
 const Order = () => {
-  
+
     const navigate = useNavigate();
     const location = useLocation();
     const { state: locationState = {} } = location;
@@ -41,12 +41,12 @@ const Order = () => {
 
     const isOrderButtonDisabled = selectedPaymentMethod === null;
 
-      const goToHome = () => {
-       navigate('/home')
+    const goToHome = () => {
+        navigate('/home')
     }
-    
+
     return (
-        <div className='order relative flex flex-col gap-[6rem] m-6 text-[14px] font-semibold'>
+        <div className='order relative flex flex-col gap-[4rem] m-6 text-[14px] font-semibold'>
 
             <div className='flex flex-col gap-6'>
                 <img onClick={handleBackClick} className='absolute left-2 top-1' src={back} alt="" />
@@ -66,20 +66,20 @@ const Order = () => {
                     <h2 className='text-[20px]'>Payment</h2>
                     <div className='flex gap-4'>
                         <button
-                            className={`bg-${selectedPaymentMethod === 'Cash' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center w-[100px]`}
+                            className={`bg-${selectedPaymentMethod === 'Cash' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center flex w-[150px] justify-center text-[10px]`}
                             onClick={() => handlePaymentMethodSelect('Cash')}
                         >
                             Cash
                         </button>
                         <button
-                            className={`bg-${selectedPaymentMethod === 'MasterCard' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center text-[10px] w-[100px]`}
+                            className={`bg-${selectedPaymentMethod === 'MasterCard' ? 'yellow-300' : 'gray-100'} flex gap-1 rounded-md px-6 py-1 items-center text-[10px] w-[150px] justify-center`}
                             onClick={() => handlePaymentMethodSelect('MasterCard')}
                         >
                             <img src={master} alt="" />
                             ...2578
                         </button>
                         <button
-                            className={`bg-${selectedPaymentMethod === 'PayPal' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center text-[10px] w-[100px]`}
+                            className={`bg-${selectedPaymentMethod === 'PayPal' ? 'yellow-300' : 'gray-100'} flex gap-1 rounded-md px-6 py-1 items-center text-[10px] w-[150px] justify-center`}
                             onClick={() => handlePaymentMethodSelect('PayPal')}
                         >
                             <img src={pay} alt="" />
@@ -126,18 +126,15 @@ const Order = () => {
                 <hr />
                 <div className='flex justify-between'>
                     <span>Total</span>
-                    <span className='text-[20px]'>$ {totalOrder} </span>
+                    <span className='text-[18px]'>$ {totalOrder} </span>
                 </div>
                 <button
-                    className={`bg-${isOrderButtonDisabled ? 'gray-300' : 'yellow-300'} w-[100%] rounded-md p-2`}
-                    disabled={isOrderButtonDisabled} onClick={goToHome}
-                >
-                    Order
+                    className={`bg-${isOrderButtonDisabled ? 'yellow-100' : 'yellow-300'}  w-[100%] rounded-md p-2`}
+                    disabled={isOrderButtonDisabled}
+                    onClick={goToHome}>Order
                 </button>
             </div>
-
         </div>
-
     )
 }
 
