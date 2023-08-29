@@ -103,7 +103,7 @@ const Restaurant = () => {
                                         );
                                     })}
                                 </div>
-                                <span className='text-[12px] font-semibold bg-gray-100 px-1'>{selectedRestaurant.deliveryTime}</span>
+                                <span className='text-[10px] font-semibold bg-gray-100 px-1'>{selectedRestaurant.deliveryTime}</span>
                             </div>
                         </div>
                     </div>

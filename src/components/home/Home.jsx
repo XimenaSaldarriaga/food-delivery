@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/authContext';
 import location from '../../assets/Location.png';
 import arrow from '../../assets/Arrow.png';
 import hamburger from '../../assets/hamburger.png';
@@ -135,7 +135,7 @@ const Home = () => {
               >
                 <img className='rounded-md w-[130px]' src={restaurant.poster} alt={restaurant.name} />
 
-                <div>
+                <div className='flex flex-col gap-1'>
                   <p className='text-[14px] font-bold'>{restaurant.name}</p>
                   <div className="star">
                     {Array.from({ length: 5 }).map((_, starIndex) => {

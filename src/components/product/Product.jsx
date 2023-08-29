@@ -120,7 +120,7 @@ const Product = () => {
                     />
                 )}
             </div>
-            <div className='flex flex-col gap-[6rem] m-4'>
+            <div className='flex flex-col gap-[3rem] m-4'>
                 <div className='flex flex-col gap-3'>
                     <div className='flex justify-between w-full'>
                         <h2 className='text-[20px] font-semibold'>{dishDetails?.name}</h2>
@@ -153,8 +153,8 @@ const Product = () => {
                         <span>{quantity}</span>
                         <button onClick={() => handleQuantityChange(1)}>+</button>
                     </div>
-                    <div className='bg-yellow-300 rounded-[5px] flex justify-between items-center w-[50%] px-6 py-1'>
-                        <span className='text-[14px] font-semibold' onClick={handleOrderClick}> Add </span>
+                    <div onClick={handleOrderClick} className='bg-yellow-300 rounded-[5px] flex justify-between items-center w-[50%] px-6 py-1'>
+                        <span className='text-[14px] font-semibold' > Add </span>
                         <span className='font-semibold'>$ {(calculateTotalPrice() * quantity).toFixed(2)}</span>
                     </div>
                 </div>
