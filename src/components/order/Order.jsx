@@ -42,7 +42,7 @@ const Order = () => {
     const isOrderButtonDisabled = selectedPaymentMethod === null;
 
     const goToHome = () => {
-        navigate('/home')
+        navigate('/current')
     }
 
     return (

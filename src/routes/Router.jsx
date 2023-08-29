@@ -13,9 +13,10 @@ import Product from '../components/product/Product';
 import Order from '../components/order/Order';
 import Payment from '../components/payment/Payment';
 import AddCard from '../components/addCard/AddCard';
-import { setIsAuthenticated } from '../redux/taskSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateRouter from './PrivateRouter.jsx';
+import History from '../components/history/History'
+import Current from '../components/current/Current'
 
 const Router = () => {
     const dispatch = useDispatch();
@@ -42,6 +43,8 @@ const Router = () => {
                         <Route path="/order" element={<Order  />} />
                         <Route path="/payment" element={<Payment  />} />
                         <Route path="/card" element={<AddCard  />} />
+                        <Route path="/history" element={<History/>} />
+                        <Route path="/current" element={<Current/>} />
                     </Route>
                 </Routes>
             </BrowserRouter>

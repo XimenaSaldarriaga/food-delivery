@@ -3,13 +3,20 @@ import './orders.scss'
 import right from '../../assets/ArrowRight.png';
 import chef from '../../assets/chef.png';
 import Footer from '../footer/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const Orders = () => {
+
+    const navigate = useNavigate();
+
+    const goOrder = () => {
+        navigate('/history')
+    }
     return (
         <div className='orders my-10 mx-4 flex flex-col gap-10'>
             <h1 className='self-center text-[15px] font-semibold'>All orders</h1>
 
-            <div className='flex justify-between'>
+            <div onClick={goOrder} className='flex justify-between'>
 
                 <div className='flex gap-5'>
                     <img src={chef} alt="" />
