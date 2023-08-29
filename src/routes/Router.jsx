@@ -16,6 +16,7 @@ import AddCard from '../components/addCard/AddCard';
 import { useDispatch, useSelector } from 'react-redux';
 import PrivateRouter from './PrivateRouter.jsx';
 import History from '../components/history/History'
+import Current from '../components/current/Current'
 
 const Router = () => {
     const dispatch = useDispatch();
@@ -43,6 +44,7 @@ const Router = () => {
                         <Route path="/payment" element={<Payment  />} />
                         <Route path="/card" element={<AddCard  />} />
                         <Route path="/history" element={<History/>} />
+                        <Route path="/current" element={<Current/>} />
                     </Route>
                 </Routes>
             </BrowserRouter>
