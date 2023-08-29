@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../context/authContext';
 import location from '../../assets/Location.png';
 import arrow from '../../assets/Arrow.png';
 import hamburger from '../../assets/hamburger.png';
