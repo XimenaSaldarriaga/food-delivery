@@ -65,7 +65,7 @@ const Home = () => {
 
 
   return (
-    <div className='home flex flex-col gap-5 m-4 mb-20'>
+    <div className='home flex flex-col gap-5 m-4 mb-20 relative'>
       <div className='flex gap-2'>
         <div><img src={location} alt="" /></div>
         <div>
@@ -165,6 +165,11 @@ const Home = () => {
           return null;
         })}
       </div>
+      <button className='bg-yellow-300 py-3 px-6 rounded-md flex justify-between text-[12px] items-center cursor-pointer fixed w-[94%] bottom-16 self-center'>
+        <span className='text-[10px] text-white px-1 rounded-[2px] bg-slate-600'>4</span>
+        <span className='font-semibold text-[14px]'>View card</span>
+        <span>64.00 $</span>
+      </button>
       <Footer />
     </div>
   );
