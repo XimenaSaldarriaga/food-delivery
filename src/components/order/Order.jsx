@@ -5,7 +5,7 @@ import next from '../../assets/Next.png';
 import ubication from '../../assets/Location.png';
 import master from '../../assets/master.png';
 import pay from '../../assets/pay.png';
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Order = () => {
   
@@ -41,15 +41,15 @@ const Order = () => {
 
     const isOrderButtonDisabled = selectedPaymentMethod === null;
 
-    const navigate = useNavigate();
-    const goToHome = () => {
+      const goToHome = () => {
        navigate('/home')
     }
+    
     return (
         <div className='order relative flex flex-col gap-[6rem] m-6 text-[14px] font-semibold'>
 
             <div className='flex flex-col gap-6'>
-                <img onClick={goToHome} className='absolute left-2 top-1' src={back} alt="" />
+                <img onClick={handleBackClick} className='absolute left-2 top-1' src={back} alt="" />
                 <h1 className='flex justify-center'>New order</h1>
                 <div className='flex flex-col gap-2'>
                     <h2 className='text-[20px]'>Deliver to</h2>
@@ -130,7 +130,7 @@ const Order = () => {
                 </div>
                 <button
                     className={`bg-${isOrderButtonDisabled ? 'gray-300' : 'yellow-300'} w-[100%] rounded-md p-2`}
-                    disabled={isOrderButtonDisabled}
+                    disabled={isOrderButtonDisabled} onClick={goToHome}
                 >
                     Order
                 </button>
