@@ -21,7 +21,7 @@ const Register = () => {
       setImageSelected(true);
     } catch (error) {
       console.log(error);
-      alert('La imagen no fue cargada correctamente');
+      alert('Error loading images');
     }
   };
 
@@ -63,11 +63,6 @@ const Register = () => {
       await addDoc(usersCollection, userData);
 
       console.log('User registered successfully', userData);
-
-      if (profileImg) {
-        const imageUrl = await uploadFile(profileImg);
-        console.log('Image uploaded to Cloudinary:', imageUrl);
-      }
 
       navigate('/');
       await Swal.fire({
