@@ -12,14 +12,16 @@ import uploadFile from '../../services/uploadFile';
 const Register = () => {
 
   const [profileImg, setProfileImageURL] = useState('');
+  const [imageSelected, setImageSelected] = useState(false);
 
   const handleImageUpload = async (imageFile) => {
     try {
       const imageUrl = await uploadFile(imageFile);
       setProfileImageURL(imageUrl);
+      setImageSelected(true);
     } catch (error) {
       console.log(error);
-      alert('La imagen no fue cargada correctamente');
+      alert('Error loading images');
     }
   };
 
@@ -45,9 +47,9 @@ const Register = () => {
       if (password.length < 8) {
         throw new Error('Password must be at least 8 characters long');
       }
-  
+
       await signUp(email, password);
-  
+
       const userData = {
         name,
         email,
@@ -55,18 +57,13 @@ const Register = () => {
         phoneNumber,
         profileImg,
       };
-  
+
       const usersCollection = collection(db, 'users');
-  
+
       await addDoc(usersCollection, userData);
-  
+
       console.log('User registered successfully', userData);
-  
-      if (profileImg) {
-        const imageUrl = await uploadFile(profileImg);
-        console.log('Image uploaded to Cloudinary:', imageUrl);
-      }
-  
+
       navigate('/');
       await Swal.fire({
         text: 'You have successfully registered!',
@@ -77,7 +74,7 @@ const Register = () => {
       console.error('Error registering user:', error);
     }
   };
-  
+
 
   return (
 
@@ -171,21 +168,27 @@ const Register = () => {
               PROFILE IMAGE
             </label>
             <input
-              id='file-input'
-              type='file'
-              accept='image/*'
+              id="file-input"
+              type="file"
+              accept="image/*"
               style={{ display: 'none' }}
-              onChange={(e) => handleImageUpload(e.target.files[0])}
-           
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setProfileImageURL(handleImageUpload(e.target.files[0]));
+                  setImageSelected(true);
+                } else {
+                  setImageSelected(false);
+                }
+              }}
             />
             <button
               type="button"
-              className='button__file p-1 cursor-pointer bg-gray-300'
+              className={`button__file p-1 cursor-pointer ${imageSelected ? 'bg-yellow-300' : 'bg-gray-300'
+                }`}
               onClick={handleFileInputClick}
             >
-              SELECT FILE
+              {imageSelected ? 'CHANGE IMAGE' : 'SELECT FILE'}
             </button>
-
 
             {profileImg && (
               <div className='profile-preview-container'>
