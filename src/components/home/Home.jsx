@@ -1,15 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useSelector } from 'react-redux';
 import { useAuth } from '../../context/authContext';
 import location from '../../assets/Location.png';
 import arrow from '../../assets/Arrow.png';
 import hamburger from '../../assets/hamburger.png';
 import pizza from '../../assets/pizza.png';
-import { getFirestore, collection, getDocs } from "firebase/firestore";
 import './home.scss'
 import { useState } from 'react';
-import { useEffect } from 'react';
-import { FirebaseError } from 'firebase/app';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -19,37 +16,20 @@ import Footer from '../footer/Footer';
 
 
 const Home = () => {
-  const [restaurants, setRestaurants] = useState([]);
+
+  const { user, fetchRestaurants, restaurants } = useAuth(); 
+
+    useEffect(() => {
+        fetchRestaurants();
+    }, []);
+
   const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
 
-  const { user } = useAuth();
   console.log(user);
 
   const taskState = useSelector(state => state.tasks);
   console.log(taskState);
-
-
-  useEffect(() => {
-    const db = getFirestore(FirebaseError);
-    const fetchRestaurants = async () => {
-      try {
-        const restaurantsCollection = collection(db, "restaurants");
-        const querySnapshot = await getDocs(restaurantsCollection);
-        const restaurantData = querySnapshot.docs.map((doc) => {
-          const data = doc.data();
-          data.id = doc.id;
-          return data;
-        });
-        setRestaurants(restaurantData);
-      } catch (error) {
-        console.error("Error fetching restaurants:", error);
-      }
-    };
-
-    fetchRestaurants();
-  }, []);
-
 
   const handleRestaurantClick = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
