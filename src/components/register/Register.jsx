@@ -7,8 +7,28 @@ import { useNavigate } from 'react-router-dom';
 import back from '../../assets/Back.png';
 import { db } from '../../firebase';
 import { collection, addDoc } from 'firebase/firestore';
+import uploadFile from '../../services/uploadFile';
 
 const Register = () => {
+
+  const [profileImg, setProfileImageURL] = useState('');
+
+  const handleImageUpload = async (imageFile) => {
+    try {
+      const imageUrl = await uploadFile(imageFile);
+      setProfileImageURL(imageUrl);
+    } catch (error) {
+      console.log(error);
+      alert('La imagen no fue cargada correctamente');
+    }
+  };
+
+  const handleFileInputClick = () => {
+    const fileInput = document.getElementById('file-input');
+    if (fileInput) {
+      fileInput.click();
+    }
+  };
 
   const goToLogin = () => {
     navigate('/')
@@ -17,30 +37,36 @@ const Register = () => {
   const { signUp } = useAuth();
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const [profileImg, setProfileImageURL] = useState('');
 
   const onSubmit = async (data) => {
     const { name, email, password, address, phoneNumber } = data;
-    console.log('Form Data:', data); 
+    console.log('Form Data:', data);
     try {
       if (password.length < 8) {
         throw new Error('Password must be at least 8 characters long');
       }
   
-     await signUp(email, password); 
-     const userData = {
-      name,
-      email,
-      address,
-      phoneNumber, 
-      profileImg,
-    };
+      await signUp(email, password);
+  
+      const userData = {
+        name,
+        email,
+        address,
+        phoneNumber,
+        profileImg,
+      };
   
       const usersCollection = collection(db, 'users');
   
       await addDoc(usersCollection, userData);
   
       console.log('User registered successfully', userData);
+  
+      if (profileImg) {
+        const imageUrl = await uploadFile(profileImg);
+        console.log('Image uploaded to Cloudinary:', imageUrl);
+      }
+  
       navigate('/');
       await Swal.fire({
         text: 'You have successfully registered!',
@@ -51,13 +77,14 @@ const Register = () => {
       console.error('Error registering user:', error);
     }
   };
+  
 
   return (
 
-    <div className='register flex flex-col '>    
-     <img onClick={goToLogin} className='absolute top-[3.3rem] ' src={back} alt="" />
-        <h2 className='register__title self-center'> Create account </h2>
-        <form className='flex flex-col gap-12' onSubmit={handleSubmit(onSubmit)}>
+    <div className='register flex flex-col '>
+      <img onClick={goToLogin} className='absolute top-[3.3rem] ' src={back} alt="" />
+      <h2 className='register__title self-center'> Create account </h2>
+      <form className='flex flex-col gap-12' onSubmit={handleSubmit(onSubmit)}>
         <div className='flex flex-col gap-6'>
           <div className='flex flex-col'>
             <label className='text-gray-400 register__label'>NAME</label>
@@ -81,7 +108,7 @@ const Register = () => {
                   message: 'Invalid email format',
                 },
               })}
-              className="register__input"
+              className="register__input "
             />
             {errors.email && <span className="error" style={{ color: 'red', fontSize: '10px' }}>{errors.email.message}</span>}
           </div>
@@ -139,31 +166,34 @@ const Register = () => {
               </span>
             )}
           </div>
-          <div className='flex flex-col'>
+          <div className='flex flex-col image-upload-container'>
             <label className='text-gray-400 register__label'>
               PROFILE IMAGE
             </label>
             <input
-              type='text'
-              name='profileImg'
-              {...register('profileImg', { required: 'Profile image URL is required' })}
-              className='register__input'
-              value={profileImg}
-              onChange={(e) => setProfileImageURL(e.target.value)}
+              id='file-input'
+              type='file'
+              accept='image/*'
+              style={{ display: 'none' }}
+              onChange={(e) => handleImageUpload(e.target.files[0])}
+           
             />
-            {errors.profileImg && (
-              <span className='error' style={{ color: 'red', fontSize: '10px' }}>
-                {errors.profileImg.message}
-              </span>
-            )}
+            <button
+              type="button"
+              className='button__file p-1 cursor-pointer bg-gray-300'
+              onClick={handleFileInputClick}
+            >
+              SELECT FILE
+            </button>
+
+
             {profileImg && (
-              <img
-                src={profileImg}
-                alt='Profile'
-                className='profile-preview'
-              />
+              <div className='profile-preview-container'>
+                <img src={profileImg} alt='Profile' className='profile-preview' />
+              </div>
             )}
           </div>
+
         </div>
         <button className='register__button p-2 cursor-pointer bg-yellow-300' type="submit">Sign In</button>
       </form>
