@@ -36,6 +36,7 @@ const Restaurant = () => {
                         uniqueCategories.add(dish.category);
                     });
                     setUniqueCategoriesArray(["All", ...uniqueCategories]);
+                    console.log(menuData)
                 } else {
                     console.log('No such document!');
                 }
