@@ -1,5 +1,4 @@
 import React, {useEffect} from 'react';
-import { useSelector } from 'react-redux';
 import { useAuth } from '../../context/authContext';
 import location from '../../assets/Location.png';
 import arrow from '../../assets/Arrow.png';
@@ -17,7 +16,7 @@ import Footer from '../footer/Footer';
 
 const Home = () => {
 
-  const { user, fetchRestaurants, restaurants } = useAuth(); 
+  const { fetchRestaurants, restaurants } = useAuth(); 
 
     useEffect(() => {
         fetchRestaurants();
@@ -25,11 +24,6 @@ const Home = () => {
 
   const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
-
-  console.log(user);
-
-  const taskState = useSelector(state => state.tasks);
-  console.log(taskState);
 
   const handleRestaurantClick = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
