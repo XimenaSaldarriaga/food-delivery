@@ -8,14 +8,14 @@ const AddCard = () => {
     const navigate = useNavigate();
     const [formComplete, setFormComplete] = useState(false);
 
-    const goToOrder = () => {
+    const goToPayment = () => {
         if (formComplete) {
-            navigate('/order');
+            navigate('/payment');
         }
     };
 
     const goBack = () => { {
-            navigate('/order');
+            navigate('/payment');
         }
     };
 
@@ -67,7 +67,7 @@ const AddCard = () => {
                 </div>
             </form>
             <button
-                onClick={goToOrder}
+                onClick={goToPayment}
                 className={`bg-yellow-300 py-1 rounded-md font-semibold text-[14px] mt-[15rem] ${formComplete ? '' : 'opacity-50 cursor-not-allowed'}`}
                 disabled={!formComplete}
             >
