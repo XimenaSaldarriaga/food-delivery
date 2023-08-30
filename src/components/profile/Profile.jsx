@@ -31,6 +31,10 @@ const Profile = () => {
       const handleEditProfile = () => {
         navigate('/profile-edit');
       };
+
+      const handlePayment = () => {
+        navigate('/payment');
+      };
     
     return (
         <div className='profile flex flex-col gap-6 m-6 relative'>
@@ -55,7 +59,7 @@ const Profile = () => {
                     </div>
                     <img className='w- object-contain w-[16px]' src={switcher} alt="" />
                 </div>
-                <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
+                <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between' onClick={handlePayment}>
                     <div className='flex gap-2'>
                         <img className='object-contain' src={coin} alt="" />
                         <button>Payment</button>
