@@ -12,9 +12,14 @@ const Payment = () => {
      const goAddCard = () => {
         navigate('/card')
      }
+
+     const goProfile = () => {
+        navigate('/profile')
+     }
+
     return (
         <div className='payment flex flex-col gap-16 relative mx-6 my-10'>
-            <img className='object-contain w-2 absolute top-1 left-2' src={back} alt="" />
+            <img className='object-contain w-2 absolute top-1 left-2' src={back} alt="" onClick={goProfile}/>
             <h1 className='self-center font-semibold'>Payment method</h1>
             <div className='flex flex-col gap-6'>
                 <div className='flex justify-between'>
