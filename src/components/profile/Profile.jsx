@@ -11,8 +11,6 @@ import next from '../../assets/Next.png';
 import switcher from '../../assets/Switcher.png';
 import Footer from '../footer/Footer';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setIsAuthenticated } from '../../redux/taskSlice';
 import logout from '../../assets/logout.png';
 import { useAuth } from '../../context/authContext';
 
@@ -21,15 +19,12 @@ import { useAuth } from '../../context/authContext';
 const Profile = () => {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { userData } = useAuth(); 
+    const { userData, signOut } = useAuth(); 
 
     const handleLogout = () => {
-        dispatch(setIsAuthenticated(false)); 
-        localStorage.removeItem('isAuthenticated');
+        signOut();
         navigate('/');
       };
-
       const handleEditProfile = () => {
         navigate('/profile-edit');
       };
@@ -42,7 +37,7 @@ const Profile = () => {
         <div className='profile flex flex-col gap-6 m-6 relative'>
             <img src={logout} className='profile__button absolute w-5 top-4 left-2' onClick={handleLogout} alt="" />
             <div className='flex flex-col items-center'>
-                <img className='rounded-[50%] w-20' src= {userData && userData.profileImg} alt="" />
+                <img className='rounded-[50%] w-20 h-20 object-cover' src= {userData && userData.profileImg} alt="" />
                 <span className='text-[14px] font-semibold'>{userData && userData.name}</span>
             </div>
 

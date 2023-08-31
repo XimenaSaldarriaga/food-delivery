@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword } from '../firebase';
+import { setIsAuthenticated } from '../redux/taskSlice';
+import { useDispatch } from 'react-redux';
 
 export const authContext = createContext();
 
@@ -15,6 +17,8 @@ export function AuthProvider({ children }) {
   const db = getFirestore();
   const [restaurants, setRestaurants] = useState([]);
   const [userData, setUserData] = useState(null);
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     fetchRestaurants();
@@ -75,6 +79,14 @@ export function AuthProvider({ children }) {
     }
   }
 
+  const signOut = () => {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('isAuthenticated');
+
+    setUserData(null);
+    dispatch(setIsAuthenticated(false));
+  };
+
   const fetchAllMenus = async () => {
     try {
       const db = getFirestore();
@@ -114,7 +126,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData  }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, signOut  }}>
       {children}
     </authContext.Provider>
   );
