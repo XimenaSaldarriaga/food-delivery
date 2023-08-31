@@ -16,7 +16,7 @@ import Footer from '../footer/Footer';
 
 const Home = () => {
 
-  const { fetchRestaurants, restaurants } = useAuth(); 
+  const { fetchRestaurants, restaurants, userData } = useAuth(); 
 
     useEffect(() => {
         fetchRestaurants();
@@ -48,7 +48,7 @@ const Home = () => {
         <div><img src={location} alt="" /></div>
         <div>
           <p className='text-yellow-300 text-[10px] '>DELIVER TO</p>
-          <p className='flex gap-1 text-[14px] font-bold'>882 Well St, New-York <img className='object-contain' src={arrow} alt="" /></p>
+          <p className='flex gap-1 text-[14px] font-bold'>{userData && userData.address}<img className='object-contain' src={arrow} alt="" /></p>
         </div>
       </div>
       <br />
