@@ -1,7 +1,6 @@
 import React from 'react'
 import './payment.scss'
 import master from '../../assets/master.png'
-import pay from '../../assets/pay.png'
 import back from '../../assets/back.png'
 import eye from '../../assets/eye.png'
 import { useNavigate } from 'react-router-dom'
@@ -27,14 +26,7 @@ const Payment = () => {
                 <div className='flex justify-between'>
                     <div className='flex gap-4'>
                         <img className='object-contain' src={master} alt="" />
-                        <span></span>
-                    </div>
-                    <img className='object-contain' src={eye} alt="" />
-                </div>
-                <div className='flex justify-between'>
-                    <div className='flex gap-4'>
-                        <img className='object-contain' src={pay} alt="" />
-                        <span>******@gmail.com</span>
+                        <span>{userData && userData.newCard.cardNumber}</span>
                     </div>
                     <img className='object-contain' src={eye} alt="" />
                 </div>
