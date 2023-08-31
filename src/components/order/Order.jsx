@@ -4,13 +4,14 @@ import back from '../../assets/Back.png';
 import next from '../../assets/Next.png';
 import ubication from '../../assets/Location.png';
 import master from '../../assets/master.png';
-import pay from '../../assets/pay.png';
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/authContext';
 
 const Order = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
+    const { userData } = useAuth();
     const { state: locationState = {} } = location;
     const { dish, selectedIngredients, initialQuantity } = locationState;
     const delivery = 7000;
@@ -45,6 +46,10 @@ const Order = () => {
         navigate('/current')
     }
 
+    const goToCard = () => {
+        navigate('/card')
+    }
+
     return (
         <div className='order relative flex flex-col gap-[4rem] m-6 text-[14px] font-semibold'>
 
@@ -64,28 +69,26 @@ const Order = () => {
 
                 <div className='flex flex-col gap-2'>
                     <h2 className='text-[20px]'>Payment</h2>
+
                     <div className='flex gap-4'>
-                        <button
-                            className={`bg-${selectedPaymentMethod === 'Cash' ? 'yellow-300' : 'gray-100'} rounded-md px-6 py-1 items-center flex w-[150px] justify-center text-[10px]`}
-                            onClick={() => handlePaymentMethodSelect('Cash')}
-                        >
-                            Cash
-                        </button>
-                        <button
-                            className={`bg-${selectedPaymentMethod === 'MasterCard' ? 'yellow-300' : 'gray-100'} flex gap-1 rounded-md px-6 py-1 items-center text-[10px] w-[150px] justify-center`}
-                            onClick={() => handlePaymentMethodSelect('MasterCard')}
-                        >
-                            <img src={master} alt="" />
-                            ...2578
-                        </button>
-                        <button
-                            className={`bg-${selectedPaymentMethod === 'PayPal' ? 'yellow-300' : 'gray-100'} flex gap-1 rounded-md px-6 py-1 items-center text-[10px] w-[150px] justify-center`}
-                            onClick={() => handlePaymentMethodSelect('PayPal')}
-                        >
-                            <img src={pay} alt="" />
-                            PayPal
-                        </button>
+                        {userData && userData.newCard && userData.newCard.cardNumber ? (
+                            <button
+                                className={`bg-${selectedPaymentMethod === 'MasterCard' ? 'yellow-300' : 'gray-100'} flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
+                                onClick={() => handlePaymentMethodSelect('MasterCard')}
+                            >
+                                <img src={master} alt="" />
+                                {userData.newCard.cardNumber}
+                            </button>
+                        ) : (
+                            <button
+                                className={`bg-gray-100 flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
+                                onClick={goToCard}
+                            >
+                                Add New Card
+                            </button>
+                        )}
                     </div>
+
                 </div>
 
 
