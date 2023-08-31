@@ -5,9 +5,11 @@ import pay from '../../assets/pay.png'
 import back from '../../assets/back.png'
 import eye from '../../assets/eye.png'
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../context/authContext';
 
 const Payment = () => {
 
+    const { userData } = useAuth();
     const navigate = useNavigate();
      const goAddCard = () => {
         navigate('/card')
@@ -25,7 +27,7 @@ const Payment = () => {
                 <div className='flex justify-between'>
                     <div className='flex gap-4'>
                         <img className='object-contain' src={master} alt="" />
-                        <span>**** **** **** 5247</span>
+                        <span></span>
                     </div>
                     <img className='object-contain' src={eye} alt="" />
                 </div>
