@@ -12,6 +12,18 @@ export const useAuth = () => {
   const context = useContext(authContext);
   return context;
 }
+  export const getUserByEmail = async (email) => {
+    try {
+      const db = getFirestore();
+      const usersCollection = collection(db, 'users');
+      const querySnapshot = await getDocs(usersCollection);
+      const existingUser = querySnapshot.docs.find((doc) => doc.data().email === email);
+      return existingUser;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      return null;
+    }
+  };
 
 export function AuthProvider({ children }) {
   const db = getFirestore();
@@ -45,16 +57,23 @@ export function AuthProvider({ children }) {
     }
   };
 
-
   const signUp = async (email, password) => {
+
     try {
       const auth = getAuth(app);
+
+      const existingUser = await getUserByEmail(email);
+      if (existingUser) {
+        console.error('User with this email already exists');
+        return;
+      }
+
       await createUserWithEmailAndPassword(auth, email, password);
       console.log('User created successfully');
     } catch (error) {
       console.error('Error creating user:', error);
     }
-  }
+  };
 
   const signIn = async (email, password) => {
     try {
