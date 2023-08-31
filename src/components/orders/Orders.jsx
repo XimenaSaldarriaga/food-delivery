@@ -21,8 +21,6 @@ const Orders = () => {
                 <div key={index} onClick={goOrder} className='flex justify-between order-item'>
 
                     <div className='flex gap-5'>
-                        <img src={chef} alt="" />
-
                         <div className='flex flex-col'>
                             <span className='text-[14px] font-semibold'>{historyItem.restaurant}</span>
                             <span className='text-[14px] text-gray-400'>$ {historyItem.totalPrice.toFixed(2)}</span>
