@@ -14,9 +14,14 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const db = getFirestore();
   const [restaurants, setRestaurants] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     fetchRestaurants();
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
   }, []);
 
   const fetchRestaurants = async () => {
@@ -36,7 +41,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  
+
   const signUp = async (email, password) => {
     try {
       const auth = getAuth(app);
@@ -53,10 +58,13 @@ export function AuthProvider({ children }) {
       await signInWithEmailAndPassword(auth, email, password);
       const usersCollection = collection(db, 'users');
       const querySnapshot = await getDocs(usersCollection);
-      const userData = querySnapshot.docs.find((doc) => doc.data().email === email);
+      const userDoc = querySnapshot.docs.find((doc) => doc.data().email === email);
 
-      if (userData) {
-        console.log('User data from Firestore:', userData.data());
+      if (userDoc) {
+        const userDataFromFirestore = userDoc.data();
+        setUserData(userDataFromFirestore);
+        localStorage.setItem('userData', JSON.stringify(userDataFromFirestore));
+        console.log('User data from Firestore:', userDataFromFirestore);
       } else {
         console.log('User data not found in Firestore');
       }
@@ -106,7 +114,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData  }}>
       {children}
     </authContext.Provider>
   );

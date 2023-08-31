@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setIsAuthenticated } from '../../redux/taskSlice';
 import logout from '../../assets/logout.png';
+import { useAuth } from '../../context/authContext';
 
 
 
@@ -21,6 +22,7 @@ const Profile = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { userData } = useAuth(); 
 
     const handleLogout = () => {
         dispatch(setIsAuthenticated(false)); 
@@ -40,8 +42,8 @@ const Profile = () => {
         <div className='profile flex flex-col gap-6 m-6 relative'>
             <img src={logout} className='profile__button absolute w-5 top-4 left-2' onClick={handleLogout} alt="" />
             <div className='flex flex-col items-center'>
-                <img className='rounded-[50%] w-20' src="https://s3-alpha-sig.figma.com/img/c13c/1e24/1e6baeeb9f8d7582f9d06e78b4720cca?Expires=1693785600&Signature=MUyEa2d4xtW4twlnlKMXSdYnv64D50IF-HwjmFxzsTWFFk3JP-MMJUEd66p8x3K9LsxGhVq8u8DjuBOZZ2KVSG3xh5O9AYl1dbkIgy4coV5qOZhafVR6VyOoYKdzcKuMmlpx~OqIxJAAA-pu~4DcLDG8vlkCsG8I8fJHcOBClqnCKo515npK5R6GHJKNoWzQtl52Rs1zg0MxkSMRXmc9bOF5B51cUwykHXJZSh8~KAHDp37IEqPmE0QKNrSBT~ttsAu6H0vJzqKYoBwWDhZgOazA9R11ZsVFFy2Shk~cEl0FIJVhrFFrTq9reV0lkL66RU0K3CHGHILDvca~jNu4cA__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4" alt="" />
-                <span className='text-[14px] font-semibold'>Jenny Wilson</span>
+                <img className='rounded-[50%] w-20' src= {userData && userData.profileImg} alt="" />
+                <span className='text-[14px] font-semibold'>{userData && userData.name}</span>
             </div>
 
             <div className='flex flex-col gap-4 text-[14px] font-semibold'>
