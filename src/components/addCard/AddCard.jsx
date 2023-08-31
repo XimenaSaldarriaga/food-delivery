@@ -15,7 +15,7 @@ const AddCard = () => {
     };
 
     const goBack = () => { {
-            navigate('/payment');
+            navigate('/profile');
         }
     };
 
