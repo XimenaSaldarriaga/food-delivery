@@ -63,21 +63,22 @@ export function AuthProvider({ children }) {
       const usersCollection = collection(db, 'users');
       const querySnapshot = await getDocs(usersCollection);
       const userDoc = querySnapshot.docs.find((doc) => doc.data().email === email);
-
+  
       if (userDoc) {
         const userDataFromFirestore = userDoc.data();
         setUserData(userDataFromFirestore);
         localStorage.setItem('userData', JSON.stringify(userDataFromFirestore));
         console.log('User data from Firestore:', userDataFromFirestore);
+        return true;
       } else {
         console.log('User data not found in Firestore');
+        return false; 
       }
-
-      console.log('User logged in successfully');
     } catch (error) {
-      console.error('Error logging in:', error);
+      console.error('Error logging in');
+      return false; 
     }
-  }
+  };
 
   const signOut = () => {
     localStorage.removeItem('userData');

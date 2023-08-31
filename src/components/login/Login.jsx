@@ -10,33 +10,34 @@ import { useAuth } from '../../context/authContext';
 
 
 
-  const Login = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const { signIn } = useAuth(); 
+const Login = () => {
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { signIn } = useAuth();
   
-    const onSubmit = async (data) => {
-      const { email, password } = data;
-      try {
-        await signIn(email, password);
-        dispatch(setIsAuthenticated(true));
-        navigate('/home');
-        localStorage.setItem('isAuthenticated', true);
-        console.log('User logged in successfully');
-        Swal.fire({
-          text: 'Welcome!',
-          confirmButtonColor: '#FFE031',
-        });
-      } catch (error) {
-        console.error('Error logging in:', error);
-        Swal.fire({
-          text: 'The data does not match',
-          confirmButtonColor: '#FFE031',
-        });
-      }
-    };
-  
+  const onSubmit = async (data) => {
+    const { email, password } = data;
+    const authResult = await signIn(email, password);
+    
+    if (authResult) {
+      dispatch(setIsAuthenticated(true));
+      navigate('/home');
+      localStorage.setItem('isAuthenticated', true);
+      console.log('User logged in successfully');
+      Swal.fire({
+        text: 'Welcome!',
+        confirmButtonColor: '#FFE031',
+      });
+    } else {
+      Swal.fire({
+        text: 'Email and password do not match',
+        confirmButtonColor: '#FFE031',
+      });
+    }
+  };
+
+
     const goRegister = () => {
       navigate('./register');
     }
