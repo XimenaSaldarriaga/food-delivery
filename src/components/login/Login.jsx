@@ -14,12 +14,12 @@ import { useAuth } from '../../context/authContext';
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { signIn } = useAuth(); // Obtiene la función de inicio de sesión del contexto
+    const { signIn } = useAuth(); 
   
     const onSubmit = async (data) => {
       const { email, password } = data;
       try {
-        await signIn(email, password); // Llama a la función signIn del contexto
+        await signIn(email, password);
         dispatch(setIsAuthenticated(true));
         navigate('/home');
         localStorage.setItem('isAuthenticated', true);
