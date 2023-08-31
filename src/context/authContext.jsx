@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword } from '../firebase';
+import { setIsAuthenticated } from '../redux/taskSlice';
+import { useDispatch } from 'react-redux';
 
 export const authContext = createContext();
 
@@ -14,9 +16,16 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const db = getFirestore();
   const [restaurants, setRestaurants] = useState([]);
+  const [userData, setUserData] = useState(null);
+  const dispatch = useDispatch();
+
 
   useEffect(() => {
     fetchRestaurants();
+    const storedUserData = localStorage.getItem('userData');
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
   }, []);
 
   const fetchRestaurants = async () => {
@@ -36,7 +45,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  
+
   const signUp = async (email, password) => {
     try {
       const auth = getAuth(app);
@@ -53,10 +62,13 @@ export function AuthProvider({ children }) {
       await signInWithEmailAndPassword(auth, email, password);
       const usersCollection = collection(db, 'users');
       const querySnapshot = await getDocs(usersCollection);
-      const userData = querySnapshot.docs.find((doc) => doc.data().email === email);
+      const userDoc = querySnapshot.docs.find((doc) => doc.data().email === email);
 
-      if (userData) {
-        console.log('User data from Firestore:', userData.data());
+      if (userDoc) {
+        const userDataFromFirestore = userDoc.data();
+        setUserData(userDataFromFirestore);
+        localStorage.setItem('userData', JSON.stringify(userDataFromFirestore));
+        console.log('User data from Firestore:', userDataFromFirestore);
       } else {
         console.log('User data not found in Firestore');
       }
@@ -66,6 +78,14 @@ export function AuthProvider({ children }) {
       console.error('Error logging in:', error);
     }
   }
+
+  const signOut = () => {
+    localStorage.removeItem('userData');
+    localStorage.removeItem('isAuthenticated');
+
+    setUserData(null);
+    dispatch(setIsAuthenticated(false));
+  };
 
   const fetchAllMenus = async () => {
     try {
@@ -106,7 +126,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, signOut  }}>
       {children}
     </authContext.Provider>
   );
