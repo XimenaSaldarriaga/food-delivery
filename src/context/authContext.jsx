@@ -2,6 +2,7 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
 import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { signInWithEmailAndPassword } from '../firebase';
 
 export const authContext = createContext();
 
@@ -13,11 +14,9 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
   const db = getFirestore();
   const [restaurants, setRestaurants] = useState([]);
-  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     fetchRestaurants();
-    fetchUsers();
   }, []);
 
   const fetchRestaurants = async () => {
@@ -37,23 +36,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const fetchUsers = async () => {
-    try {
-      const usersCollection = collection(db, "users");
-      const querySnapshot = await getDocs(usersCollection);
-      const userData = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        data.id = doc.id;
-        return data;
-      });
-      setUsers(userData);
-
-      console.log("User data fetched:", userData);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
+  
   const signUp = async (email, password) => {
     try {
       const auth = getAuth(app);
@@ -61,6 +44,26 @@ export function AuthProvider({ children }) {
       console.log('User created successfully');
     } catch (error) {
       console.error('Error creating user:', error);
+    }
+  }
+
+  const signIn = async (email, password) => {
+    try {
+      const auth = getAuth(app);
+      await signInWithEmailAndPassword(auth, email, password);
+      const usersCollection = collection(db, 'users');
+      const querySnapshot = await getDocs(usersCollection);
+      const userData = querySnapshot.docs.find((doc) => doc.data().email === email);
+
+      if (userData) {
+        console.log('User data from Firestore:', userData.data());
+      } else {
+        console.log('User data not found in Firestore');
+      }
+
+      console.log('User logged in successfully');
+    } catch (error) {
+      console.error('Error logging in:', error);
     }
   }
 
@@ -103,7 +106,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn }}>
       {children}
     </authContext.Provider>
   );

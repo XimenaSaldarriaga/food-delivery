@@ -4,41 +4,42 @@ import logo from '../../assets/Logo.png'
 import './login.scss';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { auth, signInWithEmailAndPassword } from '../../firebase';
 import { useDispatch } from 'react-redux';
 import { setIsAuthenticated } from '../../redux/taskSlice';
-
-const Login = () => {
-
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+import { useAuth } from '../../context/authContext'; 
 
 
-  const onSubmit = async (data) => {
-    const { email, password } = data;
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      dispatch(setIsAuthenticated(true));
-      navigate('/home');
-      localStorage.setItem('isAuthenticated', true); //
-    console.log('User logged in successfully');
-    Swal.fire({
-      text: 'Welcome!',
-      confirmButtonColor: '#FFE031',
-    });
-  } catch (error) {
-    console.error('Error logging in:', error);
-    Swal.fire({
-      text: 'The data does not match',
-      confirmButtonColor: '#FFE031',
-    });
-  }
-};
 
-  const goRegister = () => {
-    navigate('./register')
-  }
+  const Login = () => {
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { signIn } = useAuth(); // Obtiene la función de inicio de sesión del contexto
+  
+    const onSubmit = async (data) => {
+      const { email, password } = data;
+      try {
+        await signIn(email, password); // Llama a la función signIn del contexto
+        dispatch(setIsAuthenticated(true));
+        navigate('/home');
+        localStorage.setItem('isAuthenticated', true);
+        console.log('User logged in successfully');
+        Swal.fire({
+          text: 'Welcome!',
+          confirmButtonColor: '#FFE031',
+        });
+      } catch (error) {
+        console.error('Error logging in:', error);
+        Swal.fire({
+          text: 'The data does not match',
+          confirmButtonColor: '#FFE031',
+        });
+      }
+    };
+  
+    const goRegister = () => {
+      navigate('./register');
+    }
 
   return (
 
