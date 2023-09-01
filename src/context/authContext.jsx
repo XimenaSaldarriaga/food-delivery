@@ -1,7 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { getFirestore, collection, doc, updateDoc, query, where, getDocs } from "firebase/firestore";
 import { signInWithEmailAndPassword } from '../firebase';
 import { setIsAuthenticated } from '../redux/taskSlice';
 import { useDispatch } from 'react-redux';
@@ -25,6 +25,30 @@ export const getUserByEmail = async (email) => {
   }
 };
 
+const db = getFirestore();
+
+export function updateUserName(userEmail, newName) {
+  const usersCollectionRef = collection(db, "users");
+  const queryUser = query(usersCollectionRef, where("email", "==", userEmail));
+
+  return getDocs(queryUser)
+    .then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userRef = doc(db, "users", userDoc.id);
+
+        return updateDoc(userRef, {
+          name: newName,
+        });
+      } else {
+        throw new Error("Usuario no encontrado");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al actualizar el nombre:", error);
+      throw error;
+    });
+}
 export function AuthProvider({ children }) {
   const db = getFirestore();
   const [restaurants, setRestaurants] = useState([]);
@@ -106,6 +130,7 @@ export function AuthProvider({ children }) {
     dispatch(setIsAuthenticated(false));
   };
 
+
   const fetchAllMenus = async () => {
     try {
       const db = getFirestore();
@@ -145,7 +170,7 @@ export function AuthProvider({ children }) {
   }, []);
 
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, signOut }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut  }}>
       {children}
     </authContext.Provider>
   );
