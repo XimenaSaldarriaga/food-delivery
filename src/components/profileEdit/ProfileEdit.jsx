@@ -4,16 +4,14 @@ import edit from '../../assets/Edit.png';
 import back from '../../assets/Back.png';
 import camera from '../../assets/Camera.png';
 import { useNavigate } from 'react-router-dom';
-import { useAuth, updateUserName } from '../../context/authContext';
+import { useAuth, updateUserName, updateAddress, updatePhoneNumber } from '../../context/authContext';
 
 const ProfileEdit = () => {
     const { userData, setUserData } = useAuth();
     const [editedName, setEditedName] = useState(userData ? userData.name : '');
     const [editedPhoneNumber, setEditedPhoneNumber] = useState(userData ? userData.phoneNumber : '');
     const [editedAddress, setEditedAddress] = useState(userData ? userData.address : '');
-    const [showNameInput, setShowNameInput] = useState(false);
-    const [showPhoneNumberInput, setShowPhoneNumberInput] = useState(false);
-    const [showAddressInput, setShowAddressInput] = useState(false);
+    const [activeField, setActiveField] = useState('');
     const navigate = useNavigate();
 
     const handleBackToProfile = () => {
@@ -33,27 +31,28 @@ const ProfileEdit = () => {
               return;
             }
             const updatedUserData = { ...userData };
-            if (editedName !== userData.name) {
+            if (activeField === 'name' && editedName !== userData.name) {
               await updateUserName(userEmail, editedName);
               updatedUserData.name = editedName;
-              setShowNameInput(false);
             }
-            if (editedPhoneNumber !== userData.phoneNumber) {
-              setShowPhoneNumberInput(false);
+            if (activeField === 'phoneNumber' && editedPhoneNumber !== userData.phoneNumber) {
+                await updatePhoneNumber(userEmail, editedPhoneNumber);
+                updatedUserData.phoneNumber = editedPhoneNumber;
             }
-            if (editedAddress !== userData.address) {
-              setShowAddressInput(false); 
+            if (activeField === 'address' && editedAddress !== userData.address) {
+                await updateAddress(userEmail, editedAddress);
+                updatedUserData.address = editedAddress;
             }
             setUserData(updatedUserData);
             localStorage.setItem('userData', JSON.stringify(updatedUserData));
-      
+
             console.log('Datos actualizados con éxito:', updatedUserData);
           } catch (error) {
             console.error('Error al actualizar los datos:', error);
           }
         }
+        setActiveField('');
       };
-
 
     return (
         <div className='profileEdit flex flex-col gap-6 my-10 mx-6'>
@@ -76,9 +75,9 @@ const ProfileEdit = () => {
                         className='w- object-contain'
                         src={edit}
                         alt=""
-                        onClick={() => setShowNameInput(true)}
+                        onClick={() => setActiveField('name')} 
                     />
-                    {showNameInput ? (
+                    {activeField === 'name' ? ( 
                         <input
                             type="text"
                             value={editedName}
@@ -103,9 +102,9 @@ const ProfileEdit = () => {
                         className='w- object-contain'
                         src={edit}
                         alt=""
-                        onClick={() => setShowPhoneNumberInput(true)}
+                        onClick={() => setActiveField('phoneNumber')}
                     />
-                    {showPhoneNumberInput ? (
+                    {activeField === 'phoneNumber' ? (
                         <input
                             type="text"
                             value={editedPhoneNumber}
@@ -122,9 +121,9 @@ const ProfileEdit = () => {
                         className='w- object-contain'
                         src={edit}
                         alt=""
-                        onClick={() => setShowAddressInput(true)}
+                        onClick={() => setActiveField('address')}
                     />
-                    {showAddressInput ? (
+                    {activeField === 'address' ? (
                         <input
                             type="text"
                             value={editedAddress}
@@ -140,4 +139,5 @@ const ProfileEdit = () => {
 };
 
 export default ProfileEdit;
+
 
