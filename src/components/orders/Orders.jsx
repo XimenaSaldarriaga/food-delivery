@@ -22,15 +22,15 @@ const Orders = () => {
         }
     }, [userData]);
 
-    const goOrder = () => {
-        navigate('/history');
+    const goOrder = (orderId) => {
+        navigate(`/history/${orderId}`);
     };
 
     return (
         <div className='orders my-10 mx-4 flex flex-col gap-10'>
             <h1 className='self-center text-[15px] font-semibold'>All orders</h1>
             {userOrders.map((historyItem, index) => (
-                <div key={index} onClick={goOrder} className='flex justify-between order-item'>
+                <div key={index} onClick={() => goOrder(historyItem.orderId)} className='flex justify-between order-item'>
                     <div className='flex gap-5'>
                         <div className='flex flex-col'>
                             <span className='text-[14px] font-semibold'>{historyItem.restaurantName}</span>

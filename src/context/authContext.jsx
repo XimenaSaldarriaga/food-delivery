@@ -55,7 +55,7 @@ export async function getOrdersForUserByEmail(email) {
       const userId = querySnapshot.docs[0].id;
       const ordersCollectionRef = collection(db, 'users', userId, 'orders');
       const ordersQuerySnapshot = await getDocs(ordersCollectionRef);
-      const orders = ordersQuerySnapshot.docs.map((doc) => doc.data());
+      const orders = ordersQuerySnapshot.docs.map((doc) => ({ orderId: doc.id, ...doc.data() }));
       return orders;
     } else {
       console.error('User not found in Firestore');
