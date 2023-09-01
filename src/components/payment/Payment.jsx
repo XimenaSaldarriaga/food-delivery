@@ -1,41 +1,56 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import master from '../../assets/master.png';
+import back from '../../assets/back.png';
+import eye from '../../assets/eye.png';
+import { useNavigate } from 'react-router-dom';
+import { useAuth, getCardsForUserByEmail } from '../../context/authContext';
 import './payment.scss'
-import master from '../../assets/master.png'
-import back from '../../assets/back.png'
-import eye from '../../assets/eye.png'
-import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/authContext';
 
 const Payment = () => {
+  const { userData } = useAuth();
+  const navigate = useNavigate();
+  const [cardData, setCardData] = useState(null);
 
-    const { userData } = useAuth();
-    const navigate = useNavigate();
-     const goAddCard = () => {
-        navigate('/card')
-     }
+  useEffect(() => {
+    if (userData) {
+      const userEmail = userData.email;
+      getCardsForUserByEmail(userEmail)
+        .then((cards) => {
+          setCardData(cards[0]);
+        })
+        .catch((error) => {
+          console.error('Error fetching card data:', error);
+        });
+    }
+  }, [userData]);
 
-     const goProfile = () => {
-        navigate('/profile')
-     }
+  const goAddCard = () => {
+    navigate('/card');
+  };
 
-    return (
-        <div className='payment flex flex-col gap-16 relative mx-6 my-10'>
-            <img className='object-contain w-2 absolute top-1 left-2' src={back} alt="" onClick={goProfile}/>
-            <h1 className='self-center font-semibold'>Payment method</h1>
-            <div className='flex flex-col gap-6'>
-                <div className='flex justify-between'>
-                    <div className='flex gap-4'>
-                        <img className='object-contain' src={master} alt="" />
-                        <span>{userData && userData.newCard.cardNumber}</span>
-                    </div>
-                    <img className='object-contain' src={eye} alt="" />
-                </div>
-            </div>
+  const goProfile = () => {
+    navigate('/profile');
+  };
 
-            <button onClick={goAddCard} className='payment__button bg-yellow-300 py-1 rounded-md font-semibold'>Add a new card</button>
-
+  return (
+    <div className='payment flex flex-col gap-16 relative mx-6 my-10'>
+      <img className='object-contain w-2 absolute top-1 left-2' src={back} alt='' onClick={goProfile} />
+      <h1 className='self-center font-semibold'>Payment method</h1>
+      <div className='flex flex-col gap-6'>
+        <div className='flex justify-between'>
+          <div className='flex gap-4'>
+            <img className='object-contain' src={master} alt='' />
+            {cardData ? <span>{cardData.cardNumber}</span> : 'No card added'}
+          </div>
+          <img className='object-contain' src={eye} alt='' />
         </div>
-    )
-}
+      </div>
 
-export default Payment
+      <button onClick={goAddCard} className='payment__button bg-yellow-300 py-1 rounded-md font-semibold'>
+        Add a new card
+      </button>
+    </div>
+  );
+};
+
+export default Payment;
