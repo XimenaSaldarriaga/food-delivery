@@ -102,26 +102,25 @@ const Order = () => {
                     <h2 className='text-[20px]'>Payment</h2>
 
                     <div className='flex gap-4'>
-                        {userCards.length > 0 ? (
-                            userCards.map((card, index) => (
-                                <button
-                                    key={index}
-                                    className={`bg-${selectedPaymentMethod === card.cardName ? 'yellow-300' : 'gray-100'} flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
-                                    onClick={() => handlePaymentMethodSelect(card.cardName)}
-                                >
-                                    <img src={master} alt='' />
-                                    {card.cardName}
-                                </button>
-                            ))
-                        ) : (
+                    {userCards.length > 0 && (
+                        userCards.map((card, index) => (
                             <button
-                                className={`bg-gray-100 flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
-                                onClick={goToCard}
+                                key={index}
+                                className={`bg-${selectedPaymentMethod === card.cardName ? 'yellow-300' : 'gray-100'} flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
+                                onClick={() => handlePaymentMethodSelect(card.cardName)}
                             >
-                                Add New Card
+                                <img src={master} alt='' />
+                                {card.cardName}
                             </button>
-                        )}
-                    </div>
+                        ))
+                    )}
+                    <button
+                        className={`bg-gray-100 flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
+                        onClick={goToCard}
+                    >
+                        Add New Card
+                    </button>
+                </div>
                 </div>
 
 
