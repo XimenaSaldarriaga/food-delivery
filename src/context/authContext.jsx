@@ -46,6 +46,27 @@ export async function getCardsForUserByEmail(email) {
   }
 }
 
+export async function getOrdersForUserByEmail(email) {
+  try {
+    const db = getFirestore();
+    const usersCollection = collection(db, 'users');
+    const querySnapshot = await getDocs(query(usersCollection, where('email', '==', email)));
+    if (!querySnapshot.empty) {
+      const userId = querySnapshot.docs[0].id;
+      const ordersCollectionRef = collection(db, 'users', userId, 'orders');
+      const ordersQuerySnapshot = await getDocs(ordersCollectionRef);
+      const orders = ordersQuerySnapshot.docs.map((doc) => doc.data());
+      return orders;
+    } else {
+      console.error('User not found in Firestore');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    return [];
+  }
+}
+
 
 const db = getFirestore();
 
