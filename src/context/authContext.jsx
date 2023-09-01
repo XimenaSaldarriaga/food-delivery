@@ -1,7 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
-import { getFirestore, collection, doc, updateDoc, query, where, getDocs } from "firebase/firestore";
+import { getFirestore, collection, doc, updateDoc, query, where, getDocs, addDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from '../firebase';
 import { setIsAuthenticated } from '../redux/taskSlice';
 import { useDispatch } from 'react-redux';
@@ -24,6 +24,7 @@ export const getUserByEmail = async (email) => {
     return null;
   }
 };
+
 
 const db = getFirestore();
 
@@ -153,7 +154,7 @@ export function AuthProvider({ children }) {
       const usersCollection = collection(db, 'users');
       const querySnapshot = await getDocs(usersCollection);
       const userDoc = querySnapshot.docs.find((doc) => doc.data().email === email);
-  
+
       if (userDoc) {
         const userDataFromFirestore = userDoc.data();
         setUserData(userDataFromFirestore);
@@ -162,11 +163,11 @@ export function AuthProvider({ children }) {
         return true;
       } else {
         console.log('User data not found in Firestore');
-        return false; 
+        return false;
       }
     } catch (error) {
       console.error('Error logging in');
-      return false; 
+      return false;
     }
   };
 
@@ -217,8 +218,33 @@ export function AuthProvider({ children }) {
       });
   }, []);
 
+  const addOrderToUser = async (orderData) => {
+    if (userData) {
+      try {
+        const userEmail = userData.email;
+        const userRef = collection(db, 'users');
+        const querySnapshot = await getDocs(query(userRef, where('email', '==', userEmail)));
+
+
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          const userId = userDoc.id;
+          const ordersCollectionRef = collection(db, 'users', userId, 'orders');
+          await addDoc(ordersCollectionRef, orderData);
+          console.log('Order added to user successfully');
+        } else {
+          console.error('User not found in Firestore');
+        }
+      } catch (error) {
+        console.error('Error adding order to user:', error);
+      }
+    } else {
+      console.error('User not authenticated');
+    }
+  };
+
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut  }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, userData }}>
       {children}
     </authContext.Provider>
   );

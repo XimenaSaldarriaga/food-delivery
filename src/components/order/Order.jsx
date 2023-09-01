@@ -11,7 +11,7 @@ const Order = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const { userData } = useAuth();
+    const { userData, addOrderToUser} = useAuth();
     const { state: locationState = {} } = location;
     const { dish, selectedIngredients, initialQuantity } = locationState;
     const delivery = 7000;
@@ -42,10 +42,27 @@ const Order = () => {
 
     const isOrderButtonDisabled = selectedPaymentMethod === null;
 
-    const goToHome = () => {
-        navigate('/current')
-    }
+    const goToHome = async () => {
+        const orderData = {
+          restaurantName: dish?.restaurant,
+          menuName: dish?.name,
+          pricePerItem: dish?.price,
+          quantity: quantity,
+          deliveryCost: delivery,
+          totalCost: totalOrder,
+        };
+    
+        try {
 
+          await addOrderToUser(orderData);
+    
+          navigate('/current');
+
+        } catch (error) {
+          console.error('Error al registrar el pedido en Firestore:', error);
+        }
+      };
+    
     const goToCard = () => {
         navigate('/card')
     }
