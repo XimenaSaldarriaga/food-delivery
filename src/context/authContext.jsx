@@ -49,6 +49,54 @@ export function updateUserName(userEmail, newName) {
       throw error;
     });
 }
+
+export function updatePhoneNumber(userEmail, newPhoneNumber) {
+  const usersCollectionRef = collection(db, "users");
+  const queryUser = query(usersCollectionRef, where("email", "==", userEmail));
+
+  return getDocs(queryUser)
+    .then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userRef = doc(db, "users", userDoc.id);
+
+        return updateDoc(userRef, {
+          phoneNumber: newPhoneNumber,
+        });
+      } else {
+        throw new Error("Usuario no encontrado");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al actualizar el número de teléfono:", error);
+      throw error;
+    });
+}
+
+export function updateAddress(userEmail, newAddress) {
+  const usersCollectionRef = collection(db, "users");
+  const queryUser = query(usersCollectionRef, where("email", "==", userEmail));
+
+  return getDocs(queryUser)
+    .then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userRef = doc(db, "users", userDoc.id);
+
+        return updateDoc(userRef, {
+          address: newAddress,
+        });
+      } else {
+        throw new Error("Usuario no encontrado");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al actualizar la dirección:", error);
+      throw error;
+    });
+}
+
+
 export function AuthProvider({ children }) {
   const db = getFirestore();
   const [restaurants, setRestaurants] = useState([]);
