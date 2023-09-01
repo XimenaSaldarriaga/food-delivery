@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../context/authContext';
+import { useAuth, getUserByEmail } from '../../context/authContext';
 import './register.scss';
 import Swal from 'sweetalert2';
 import { useForm } from 'react-hook-form';
@@ -43,6 +43,16 @@ const Register = () => {
   const onSubmit = async (data) => {
     const { name, email, password, address, phoneNumber } = data;
     console.log('Form Data:', data);
+
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      Swal.fire({
+        text: 'User with this email already exists!',
+        confirmButtonColor: '#FFE031',
+
+      });
+      return;
+    }
     try {
       if (password.length < 8) {
         throw new Error('Password must be at least 8 characters long');
