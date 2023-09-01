@@ -3,28 +3,39 @@ import back from '../../assets/back.png';
 import eye from '../../assets/eye.png';
 import './addCard.scss';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/authContext';
 
 const AddCard = () => {
     const navigate = useNavigate();
     const [formComplete, setFormComplete] = useState(false);
+    const { addCardToUser } = useAuth();
+    const [cardData, setCardData] = useState({
+      cardName: '',
+      cardNumber: '',
+      expires: '',
+      cvv: '',
+    });
 
-    const goToPayment = () => {
-        if (formComplete) {
-            navigate('/payment');
-        }
-    };
-
-    const goBack = () => { {
-            navigate('/profile');
-        }
+    const goBack = () => {
+        navigate('/profile');
     };
 
     const handleInputChange = (event) => {
-        const cardName = event.target.form['cardName'].value;
-        const cardNumber = event.target.form['cardNumber'].value;
-        const expires = event.target.form['expires'].value;
-        const cvv = event.target.form['cvv'].value;
-        setFormComplete(cardName && cardNumber && expires && cvv);
+        const { name, value } = event.target;
+        setCardData({
+            ...cardData,
+            [name]: value,
+        });
+        setFormComplete(Object.values(cardData).every((val) => val !== ''));
+    };
+
+    const addCard = async () => {
+        try {
+            await addCardToUser(cardData);
+            navigate('/profile');
+        } catch (error) {
+            console.error('Error adding card to user in Firestore:', error);
+        }
     };
 
     return (
@@ -37,6 +48,7 @@ const AddCard = () => {
                     placeholder='Card name'
                     type='text'
                     name='cardName'
+                    value={cardData.cardName}
                     onChange={handleInputChange}
                 />
                 <div className='relative'>
@@ -45,6 +57,7 @@ const AddCard = () => {
                         placeholder='Card number'
                         type='number'
                         name='cardNumber'
+                        value={cardData.cardNumber}
                         onChange={handleInputChange}
                     />
                     <img className='object-contain w-4 absolute top-3 right-5' src={eye} alt='' />
@@ -55,6 +68,7 @@ const AddCard = () => {
                         placeholder='Expires'
                         type='number'
                         name='expires'
+                        value={cardData.expires}
                         onChange={handleInputChange}
                     />
                     <input
@@ -62,12 +76,13 @@ const AddCard = () => {
                         placeholder='CVV'
                         type='number'
                         name='cvv'
+                        value={cardData.cvv}
                         onChange={handleInputChange}
                     />
                 </div>
             </form>
             <button
-                onClick={goToPayment}
+                onClick={addCard}
                 className={`bg-yellow-300 py-1 rounded-md font-semibold text-[14px] mt-[15rem] ${formComplete ? '' : 'opacity-50 cursor-not-allowed'}`}
                 disabled={!formComplete}
             >
@@ -78,3 +93,4 @@ const AddCard = () => {
 };
 
 export default AddCard;
+

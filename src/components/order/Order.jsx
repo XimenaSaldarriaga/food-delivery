@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './order.scss'
 import back from '../../assets/Back.png';
 import next from '../../assets/Next.png';
 import ubication from '../../assets/Location.png';
 import master from '../../assets/master.png';
 import { useLocation, useNavigate } from 'react-router-dom'
-import { useAuth } from '../../context/authContext';
+import { useAuth, getCardsForUserByEmail } from '../../context/authContext';
 
 const Order = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    const { userData, addOrderToUser} = useAuth();
+    const [userCards, setUserCards] = useState([]);
+    const { userData, addOrderToUser } = useAuth();
     const { state: locationState = {} } = location;
     const { dish, selectedIngredients, initialQuantity } = locationState;
     const delivery = 7000;
@@ -44,28 +45,41 @@ const Order = () => {
 
     const goToHome = async () => {
         const orderData = {
-          restaurantName: dish?.restaurant,
-          menuName: dish?.name,
-          pricePerItem: dish?.price,
-          quantity: quantity,
-          deliveryCost: delivery,
-          totalCost: totalOrder,
+            restaurantName: dish?.restaurant,
+            menuName: dish?.name,
+            pricePerItem: dish?.price,
+            quantity: quantity,
+            deliveryCost: delivery,
+            totalCost: totalOrder,
         };
-    
+
         try {
 
-          await addOrderToUser(orderData);
-    
-          navigate('/current');
+            await addOrderToUser(orderData);
+
+            navigate('/current');
 
         } catch (error) {
-          console.error('Error al registrar el pedido en Firestore:', error);
+            console.error('Error al registrar el pedido en Firestore:', error);
         }
-      };
-    
+    };
+
     const goToCard = () => {
         navigate('/card')
     }
+
+    useEffect(() => {
+        if (userData) {
+            const userEmail = userData.email;
+            getCardsForUserByEmail(userEmail)
+                .then((cards) => {
+                    setUserCards(cards);
+                })
+                .catch((error) => {
+                    console.error('Error fetching card data:', error);
+                });
+        }
+    }, [userData]);
 
     return (
         <div className='order relative flex flex-col gap-[4rem] m-6 text-[14px] font-semibold'>
@@ -88,24 +102,25 @@ const Order = () => {
                     <h2 className='text-[20px]'>Payment</h2>
 
                     <div className='flex gap-4'>
-                        {userData && userData.newCard && userData.newCard.cardNumber ? (
+                    {userCards.length > 0 && (
+                        userCards.map((card, index) => (
                             <button
-                                className={`bg-${selectedPaymentMethod === 'MasterCard' ? 'yellow-300' : 'gray-100'} flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
-                                onClick={() => handlePaymentMethodSelect('MasterCard')}
+                                key={index}
+                                className={`bg-${selectedPaymentMethod === card.cardName ? 'yellow-300' : 'gray-100'} flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
+                                onClick={() => handlePaymentMethodSelect(card.cardName)}
                             >
-                                <img src={master} alt="" />
-                                {userData.newCard.cardNumber}
+                                <img src={master} alt='' />
+                                {card.cardName}
                             </button>
-                        ) : (
-                            <button
-                                className={`bg-gray-100 flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
-                                onClick={goToCard}
-                            >
-                                Add New Card
-                            </button>
-                        )}
-                    </div>
-
+                        ))
+                    )}
+                    <button
+                        className={`bg-gray-100 flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
+                        onClick={goToCard}
+                    >
+                        Add New Card
+                    </button>
+                </div>
                 </div>
 
 

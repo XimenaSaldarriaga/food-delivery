@@ -25,8 +25,52 @@ export const getUserByEmail = async (email) => {
   }
 };
 
+export async function getCardsForUserByEmail(email) {
+  try {
+    const db = getFirestore();
+    const usersCollection = collection(db, 'users');
+    const querySnapshot = await getDocs(query(usersCollection, where('email', '==', email)));
+    if (!querySnapshot.empty) {
+      const userId = querySnapshot.docs[0].id;
+      const cardsCollectionRef = collection(db, 'users', userId, 'cards');
+      const cardsQuerySnapshot = await getDocs(cardsCollectionRef);
+      const cards = cardsQuerySnapshot.docs.map((doc) => doc.data());
+      return cards;
+    } else {
+      console.error('User not found in Firestore');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching cards:', error);
+    return [];
+  }
+}
+
+export async function getOrdersForUserByEmail(email) {
+  try {
+    const db = getFirestore();
+    const usersCollection = collection(db, 'users');
+    const querySnapshot = await getDocs(query(usersCollection, where('email', '==', email)));
+    if (!querySnapshot.empty) {
+      const userId = querySnapshot.docs[0].id;
+      const ordersCollectionRef = collection(db, 'users', userId, 'orders');
+      const ordersQuerySnapshot = await getDocs(ordersCollectionRef);
+      const orders = ordersQuerySnapshot.docs.map((doc) => ({ orderId: doc.id, ...doc.data() }));
+      return orders;
+    } else {
+      console.error('User not found in Firestore');
+      return [];
+    }
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    return [];
+  }
+}
+
 
 const db = getFirestore();
+
+
 
 export function updateUserName(userEmail, newName) {
   const usersCollectionRef = collection(db, "users");
@@ -243,8 +287,33 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const addCardToUser = async (cardData) => {
+    if (userData) {
+      try {
+        const userEmail = userData.email;
+        const userRef = collection(db, 'users');
+        const querySnapshot = await getDocs(query(userRef, where('email', '==', userEmail)));
+  
+        if (!querySnapshot.empty) {
+          const userDoc = querySnapshot.docs[0];
+          const userId = userDoc.id;
+          const cardsCollectionRef = collection(db, 'users', userId, 'cards');
+          await addDoc(cardsCollectionRef, cardData);
+          console.log('Card added to user successfully');
+        } else {
+          console.error('User not found in Firestore');
+        }
+      } catch (error) {
+        console.error('Error adding card to user:', error);
+      }
+    } else {
+      console.error('User not authenticated');
+    }
+  };
+  
+
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, userData }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser }}>
       {children}
     </authContext.Provider>
   );
