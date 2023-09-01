@@ -41,7 +41,7 @@ const History = () => {
             <h1 className='self-center font-semibold'>26.11.2022</h1>
 
             {orderDetails && (
-                <div className='flex flex-col gap-1'>
+                <div className='flex flex-col gap-10'>
                     <div className='flex justify-between'>
                         <div className='flex gap-2'>
                             <span>{`${orderDetails.quantity}x`}</span>
@@ -50,21 +50,25 @@ const History = () => {
                         <span>{`$${orderDetails.pricePerItem ? orderDetails.pricePerItem.toFixed(2) : ''}`}</span>
                     </div>
 
-                    <div className='flex justify-between'>
-                        <span className='font-semibold'>Production cost</span>
-                        <span>{`$${(orderDetails.pricePerItem * orderDetails.quantity).toFixed(2)}`}</span>
-                    </div>
-                    <div className='flex justify-between'>
-                        <span className='font-semibold'>Сost of delivery</span>
-                        <span>{`$${orderDetails.deliveryCost.toFixed(2)}`}</span>
+                    <div className='flex flex-col gap-1'>
+                        <div className='flex justify-between'>
+                            <span className='font-semibold'>Production cost</span>
+                            <span>{`$${(orderDetails.pricePerItem * orderDetails.quantity).toFixed(2)}`}</span>
+                        </div>
+                        <div className='flex justify-between'>
+                            <span className='font-semibold'>Сost of delivery</span>
+                            <span>{`$${orderDetails.deliveryCost.toFixed(2)}`}</span>
+                        </div>
+
+                        <hr className='bg-gray-500' />
+
+                        <div className='flex justify-between font-semibold'>
+                            <span>Total</span>
+                            <span>{`$${orderDetails.totalCost.toFixed(2)}`}</span>
+                        </div>
                     </div>
 
-                    <hr className='bg-gray-500'/>
 
-                    <div className='flex justify-between font-semibold'>
-                        <span>Total</span>
-                        <span>{`$${orderDetails.totalCost.toFixed(2)}`}</span>
-                    </div>
                 </div>
             )}
 
