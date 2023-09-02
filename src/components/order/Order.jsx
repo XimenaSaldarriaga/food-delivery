@@ -17,11 +17,11 @@ const Order = () => {
     const { userData, addOrderToUser, setCardButtonVisible } = useAuth();
     const { state: locationState = {} } = location;
     const { dish, selectedIngredients, initialQuantity } = locationState;
-    const delivery = 7000;
     const initialQuantityFromLocalStorage = localStorage.getItem('selectedQuantity');
     const initialQuantityFromState = initialQuantityFromLocalStorage ? parseInt(initialQuantityFromLocalStorage, 10) : 1;
     const [quantity, setQuantity] = useState(initialQuantityFromState);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+    const delivery = quantity === 0 ? 0 : 7000;
 
     const handleBackClick = () => {
         navigate(-1);
