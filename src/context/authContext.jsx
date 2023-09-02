@@ -146,6 +146,7 @@ export function AuthProvider({ children }) {
   const db = getFirestore();
   const [restaurants, setRestaurants] = useState([]);
   const [userData, setUserData] = useState(null);
+  const [currentOrder, setCurrentOrder] = useState(null); 
   const dispatch = useDispatch();
 
 
@@ -275,6 +276,7 @@ export function AuthProvider({ children }) {
           const userId = userDoc.id;
           const ordersCollectionRef = collection(db, 'users', userId, 'orders');
           await addDoc(ordersCollectionRef, orderData);
+          setCurrentOrder(orderData);
           console.log('Order added to user successfully');
         } else {
           console.error('User not found in Firestore');
@@ -313,7 +315,7 @@ export function AuthProvider({ children }) {
   
 
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser }}>
+    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser, currentOrder}}>
       {children}
     </authContext.Provider>
   );

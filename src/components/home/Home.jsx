@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../../context/authContext';
 import location from '../../assets/Location.png';
 import arrow from '../../assets/Arrow.png';
@@ -12,15 +12,16 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaStar } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../footer/Footer';
+import CardButton from '../cardButton/CardButton';
 
 
 const Home = () => {
 
-  const { fetchRestaurants, restaurants, userData } = useAuth(); 
+  const { fetchRestaurants, restaurants, userData } = useAuth();
 
-    useEffect(() => {
-        fetchRestaurants();
-    }, []);
+  useEffect(() => {
+    fetchRestaurants();
+  }, []);
 
   const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Home = () => {
 
   const goCurrent = () => {
     navigate('/current');
-};
+  };
 
   const settings = {
     dots: true,
@@ -143,11 +144,7 @@ const Home = () => {
           return null;
         })}
       </div>
-      <button onClick={goCurrent} className='bg-yellow-300 py-3 px-6 rounded-md flex justify-between text-[12px] items-center cursor-pointer fixed w-[94%] bottom-16 self-center home__button'>
-        <span className='text-[10px] text-white px-1 rounded-[2px] bg-slate-600'>4</span>
-        <span className='font-semibold text-[14px]'>View card</span>
-        <span>64.00 $</span>
-      </button>
+      <CardButton onClick={goCurrent} />
       <Footer />
     </div>
   );
