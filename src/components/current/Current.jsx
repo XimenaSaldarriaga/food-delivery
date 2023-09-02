@@ -1,29 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './current.scss';
 import back from '../../assets/back.png';
 import clock from '../../assets/clock.png';
 import { useNavigate } from 'react-router-dom';
-import { getOrdersForUserByEmail, useAuth } from '../../context/authContext';
+import { useAuth } from '../../context/authContext';
 
 const Current = () => {
     const navigate = useNavigate();
-    const { userData } = useAuth();
-    const [currentOrder, setCurrentOrder] = useState(null);
-
-    useEffect(() => {
-        if (userData && userData.email) {
-            getOrdersForUserByEmail(userData.email)
-                .then((orders) => {
-                    if (orders.length > 0) {
-                        setCurrentOrder(orders[0]);
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error fetching user orders:', error);
-                });
-        }
-    }, [userData]);
-
+    const { currentOrder } = useAuth();
     const goBack = () => {
         navigate(-1);
     };
