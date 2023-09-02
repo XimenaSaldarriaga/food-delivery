@@ -98,7 +98,7 @@ const Order = () => {
                     <div className='flex justify-between'>
                         <div className='flex gap-4'>
                             <img className='object-contain w-5' src={ubication} alt="" />
-                            <p>882 Well St, New-York</p>
+                            <p className='flex gap-1 text-[14px] font-bold'>{userData && userData.address}</p>
                         </div>
                         <img className='object-contain' src={next} alt="" />
                     </div>
