@@ -74,7 +74,7 @@ const Payment = () => {
           ))}
         </div>
       ) : (
-        <span>No cards added</span>
+        <span className='text-[14px] font-semibold text-gray-400'>No cards added</span>
       )}
 
       <button onClick={goAddCard} className='payment__button bg-yellow-300 py-1 rounded-md font-semibold'>
