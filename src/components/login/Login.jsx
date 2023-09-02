@@ -14,7 +14,7 @@ const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle } = useAuth();
   
   const onSubmit = async (data) => {
     const { email, password } = data;
@@ -32,6 +32,25 @@ const Login = () => {
     } else {
       Swal.fire({
         text: 'Email and password do not match',
+        confirmButtonColor: '#FFE031',
+      });
+    }
+  };
+
+  const onGoogleSignIn = async () => {
+    const googleSignInResult = await signInWithGoogle();
+    if (googleSignInResult) {
+      dispatch(setIsAuthenticated(true));
+      navigate('/home');
+      localStorage.setItem('isAuthenticated', true);
+      console.log('User logged in with Google successfully');
+      Swal.fire({
+        text: 'Welcome!',
+        confirmButtonColor: '#FFE031',
+      });
+    } else {
+      Swal.fire({
+        text: 'Failed to sign in with Google',
         confirmButtonColor: '#FFE031',
       });
     }
@@ -87,6 +106,7 @@ const Login = () => {
             <button className='login__button bg-yellow-300 p-2 cursor-pointer' type="submit">Login</button>
           </div>
         </form>
+        <button className='login__google bg-yellow-300 p-2 cursor-pointer' onClick={onGoogleSignIn}>Sign in with Google</button>
         <button className='login__signUp bg-yellow-300 p-2 cursor-pointer' onClick={goRegister}>Sign Up</button>
       </div>
     </div>
