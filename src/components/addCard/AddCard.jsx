@@ -32,7 +32,7 @@ const AddCard = () => {
     const addCard = async () => {
         try {
             await addCardToUser(cardData);
-            navigate('/profile');
+            navigate(-1);
         } catch (error) {
             console.error('Error adding card to user in Firestore:', error);
         }

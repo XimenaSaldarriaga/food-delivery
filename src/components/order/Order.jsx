@@ -7,6 +7,7 @@ import master from '../../assets/master.png';
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth, getCardsForUserByEmail } from '../../context/authContext';
 
+
 const Order = () => {
 
     const navigate = useNavigate();
@@ -42,15 +43,18 @@ const Order = () => {
     };
 
     const isOrderButtonDisabled = selectedPaymentMethod === null;
+    const currentTimestamp = new Date();
 
     const goToHome = async () => {
         const orderData = {
             restaurantName: dish?.restaurant,
+            menuImage: dish?.image,
             menuName: dish?.name,
             pricePerItem: dish?.price,
             quantity: quantity,
             deliveryCost: delivery,
             totalCost: totalOrder,
+            dateOrder: currentTimestamp,
         };
 
         try {
