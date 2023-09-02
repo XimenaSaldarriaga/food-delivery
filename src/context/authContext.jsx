@@ -1,7 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail  } from 'firebase/auth';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
-import { getFirestore, collection, doc, updateDoc, query, where, getDocs, addDoc, deleteDoc, setDoc  } from "firebase/firestore";
+import { getFirestore, collection, doc, updateDoc, query, where, getDocs, addDoc, deleteDoc, setDoc, getDoc  } from "firebase/firestore";
 import { signInWithEmailAndPassword } from '../firebase';
 import { setIsAuthenticated } from '../redux/taskSlice';
 import { useDispatch } from 'react-redux';
@@ -238,50 +238,45 @@ export function AuthProvider({ children }) {
 
   const signInWithGoogle = async () => {
     try {
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-        const result = await signInWithPopup(auth, provider);
-        const user = result.user;
-        const email = user.email;
-        const displayName = user.displayName;
-        const photoURL = user.photoURL;
-        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-
-        if (signInMethods.includes("password")) {
-            setUserData({
-                email: email,
-                name: displayName,
-                profileImg: photoURL,
-            });
-            console.log('User logged in with Google successfully');
-        } else {
-
-            const userDocRef = doc(db, 'users', user.uid);
-            await setDoc(userDocRef, {
-                email: email,
-                name: displayName,
-                profileImg: photoURL,
-            });
-
-            setUserData({
-                email: email,
-                name: displayName,
-                profileImg: photoURL,
-            });
-            localStorage.setItem('userData', JSON.stringify({
-                email: email,
-                name: displayName,
-                profileImg: photoURL,
-            }));
-            console.log('User logged in with Google successfully and account created in Firestore');
-        }
-
-        return true;
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const email = user.email;
+      const displayName = user.displayName;
+      const photoURL = user.photoURL;
+      const userDocRef = doc(db, 'users', user.uid);
+      const existingUserDoc = await getDoc(userDocRef);
+  
+      if (existingUserDoc.exists()) {
+        const userData = existingUserDoc.data();
+        setUserData(userData);
+        localStorage.setItem('userData', JSON.stringify(userData));
+        console.log('User logged in with Google successfully');
+      } else {
+        await setDoc(userDocRef, {
+          email: email,
+          name: displayName,
+          profileImg: photoURL,
+        });
+  
+        const userData = {
+          email: email,
+          name: displayName,
+          profileImg: photoURL,
+        };
+        setUserData(userData);
+        localStorage.setItem('userData', JSON.stringify(userData));
+        console.log('User logged in with Google successfully and account created in Firestore');
+      }
+  
+      return true;
     } catch (error) {
-        console.error('Error logging in with Google:', error);
-        return false;
+      console.error('Error logging in with Google:', error);
+      return false;
     }
-};
+  };
+  
 
 
 
