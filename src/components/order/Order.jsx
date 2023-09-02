@@ -18,8 +18,9 @@ const Order = () => {
     const { state: locationState = {} } = location;
     const { dish, selectedIngredients, initialQuantity } = locationState;
     const delivery = 7000;
-
-    const [quantity, setQuantity] = useState(initialQuantity);
+    const initialQuantityFromLocalStorage = localStorage.getItem('selectedQuantity');
+    const initialQuantityFromState = initialQuantityFromLocalStorage ? parseInt(initialQuantityFromLocalStorage, 10) : 1;
+    const [quantity, setQuantity] = useState(initialQuantityFromState);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
 
     const handleBackClick = () => {
@@ -31,12 +32,17 @@ const Order = () => {
 
         if (newQuantity >= 0) {
             setQuantity(newQuantity);
+            localStorage.setItem('selectedQuantity', newQuantity.toString());
         }
-
         if (newQuantity === 0) {
             setSelectedPaymentMethod(null);
         }
     };
+
+    useEffect(() => {
+        localStorage.setItem('selectedQuantity', quantity.toString());
+    }, [quantity]);
+
 
 
     const AdditionalIngredients = () => {

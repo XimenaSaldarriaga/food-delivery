@@ -18,13 +18,14 @@ const Product = () => {
     const [dishDetails, setDishDetails] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedIngredients, setSelectedIngredients] = useState({});
-    const [quantity, setQuantity] = useState(1);
+    const initialQuantity = parseInt(localStorage.getItem('selectedQuantity')) || 1;
+    const [quantity, setQuantity] = useState(initialQuantity);
 
     const handleBackClick = () => {
         if (restaurantId && restaurantName) {
             navigate(`/restaurant/${restaurantId}`, { state: { restaurantName } });
         } else {
-                navigate(`/restaurant/${restaurantId}`);
+            navigate(`/restaurant/${restaurantId}`);
         }
     };
 
@@ -86,10 +87,20 @@ const Product = () => {
             }
         };
 
+        const savedQuantity = localStorage.getItem('selectedQuantity');
+        if (savedQuantity) {
+            setQuantity(Number(savedQuantity));
+        }
+
         if (restaurantId && dishId) {
             fetchDishDetails();
         }
     }, [dishDetails, selectedIngredients]);
+
+    useEffect(() => {
+        localStorage.setItem('selectedQuantity', quantity.toString());
+        console.log('Cantidad guardada en el almacenamiento local:', quantity);
+    }, [quantity]);
 
     const handleOrderClick = () => {
         if (dishDetails) {
@@ -103,6 +114,8 @@ const Product = () => {
             });
         }
     };
+
+
     return (
         <div className='product'>
             <div className='relative'>
