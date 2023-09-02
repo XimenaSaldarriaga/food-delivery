@@ -1,7 +1,7 @@
 import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
-import { getFirestore, collection, doc, updateDoc, query, where, getDocs, addDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, updateDoc, query, where, getDocs, addDoc, deleteDoc } from "firebase/firestore";
 import { signInWithEmailAndPassword } from '../firebase';
 import { setIsAuthenticated } from '../redux/taskSlice';
 import { useDispatch } from 'react-redux';
@@ -331,10 +331,42 @@ export function AuthProvider({ children }) {
       console.error('User not authenticated');
     }
   };
+
+  const deleteCard = async (userEmail, cardNumber) => {
+    try {
+      const db = getFirestore();
+      const usersCollection = collection(db, 'users');
+      const querySnapshot = await getDocs(query(usersCollection, where('email', '==', userEmail)));
+      
+      if (!querySnapshot.empty) {
+        const userId = querySnapshot.docs[0].id;
+        const cardsCollectionRef = collection(db, 'users', userId, 'cards');
+        const queryCard = query(cardsCollectionRef, where('cardNumber', '==', cardNumber));
+        const cardQuerySnapshot = await getDocs(queryCard);
+  
+        if (!cardQuerySnapshot.empty) {
+          const cardId = cardQuerySnapshot.docs[0].id;
+          const cardRef = doc(cardsCollectionRef, cardId);
+          
+          // Eliminar la tarjeta del usuario
+          await deleteDoc(cardRef);
+          console.log('Card deleted successfully');
+        } else {
+          console.error('Card not found in Firestore');
+        }
+      } else {
+        console.error('User not found in Firestore');
+      }
+    } catch (error) {
+      console.error('Error deleting card:', error);
+      throw error;
+    }
+  };
+  
   
 
   return (
-    <authContext.Provider value={{ isCardButtonVisible, setCardButtonVisible, signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser, currentOrder}}>
+    <authContext.Provider value={{ isCardButtonVisible, setCardButtonVisible, signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser, currentOrder, deleteCard}}>
       {children}
     </authContext.Provider>
   );
