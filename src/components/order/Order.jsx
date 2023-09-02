@@ -23,6 +23,7 @@ const Order = () => {
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
     const delivery = quantity === 0 ? 0 : 7000;
     const [note, setNote] = useState("");
+    const userHasInfo = userData && userData.name && userData.phoneNumber && userData.address;
 
     const handleBackClick = () => {
         navigate(-1);
@@ -204,13 +205,22 @@ const Order = () => {
                     <span className='text-[18px]'>$ {totalOrder} </span>
                 </div>
                 <div className='order relative flex flex-col gap-[4rem] m-6 text-[14px] font-semibold'>
-                    <button
-                        className={`bg-${isOrderButtonDisabled || quantity === 0 ? 'yellow-100' : 'yellow-300'}  w-[100%] rounded-md p-2`}
-                        disabled={isOrderButtonDisabled || quantity === 0}
-                        onClick={goToHome}
-                    >
-                        {quantity === 0 ? 'No products added' : 'Order'}
-                    </button>
+                    {userHasInfo ? (
+                        <button
+                            className={`bg-${isOrderButtonDisabled || quantity === 0 ? 'yellow-100' : 'yellow-300'}  w-[100%] rounded-md p-2`}
+                            disabled={isOrderButtonDisabled || quantity === 0}
+                            onClick={goToHome}
+                        >
+                            {quantity === 0 ? 'No products added' : 'Order'}
+                        </button>
+                    ) : (
+                        <button
+                            className={`bg-yellow-300  w-[100%] rounded-md p-2`}
+                            onClick={() => navigate('/profile-edit')}
+                        >
+                            Add User Info
+                        </button>
+                    )}
                 </div>
             </div>
         </div>

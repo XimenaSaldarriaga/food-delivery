@@ -100,7 +100,7 @@ const ProfileEdit = () => {
 
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
                     <div className='flex gap-2'>
-                        <button>{userData && userData.name}</button>
+                        <button>Name: {userData && userData.name}</button>
                     </div>
                     <img
                         className='w- object-contain'
@@ -119,7 +119,7 @@ const ProfileEdit = () => {
 
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
                     <div className='flex gap-2  '>
-                        <button>{userData && userData.email}</button>
+                        <button> Email: {userData && userData.email}</button>
                     </div>
                     <img className='w- object-contain' src={edit} alt="" />
 
@@ -127,7 +127,7 @@ const ProfileEdit = () => {
 
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
                     <div className='flex gap-2'>
-                        <button>{userData && userData.phoneNumber}</button>
+                        <button>Phone Numer: {userData && userData.phoneNumber}</button>
                     </div>
                     <img
                         className='w- object-contain'
@@ -146,7 +146,7 @@ const ProfileEdit = () => {
 
                 <div className='bg-gray-100 flex rounded-[10px] p-3 justify-between'>
                     <div className='flex gap-2'>
-                        <button>{userData && userData.address}</button>
+                        <button>Address: {userData && userData.address}</button>
                     </div>
                     <img
                         className='w- object-contain'
