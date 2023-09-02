@@ -17,7 +17,7 @@ import CardButton from '../cardButton/CardButton';
 
 const Home = () => {
 
-  const { fetchRestaurants, restaurants, userData } = useAuth();
+  const { fetchRestaurants, restaurants, userData, setCardButtonVisible, isCardButtonVisible} = useAuth();
 
   useEffect(() => {
     fetchRestaurants();
@@ -25,14 +25,18 @@ const Home = () => {
 
   const [selectedCategory, setSelectedCategory] = useState('All');
   const navigate = useNavigate();
-
+ 
   const handleRestaurantClick = (restaurantId) => {
     navigate(`/restaurant/${restaurantId}`);
   };
 
   const goCurrent = () => {
+    console.log('Antes de establecer isCardButtonVisible:', isCardButtonVisible);
+    setCardButtonVisible(true);
+    console.log('Después de establecer isCardButtonVisible:', isCardButtonVisible);
     navigate('/current');
   };
+  
 
   const settings = {
     dots: true,
@@ -144,7 +148,9 @@ const Home = () => {
           return null;
         })}
       </div>
-      <CardButton onClick={goCurrent} />
+      {isCardButtonVisible && <CardButton onClick={goCurrent} />}
+
+
       <Footer />
     </div>
   );

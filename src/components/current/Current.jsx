@@ -2,18 +2,22 @@ import React from 'react';
 import './current.scss';
 import back from '../../assets/back.png';
 import clock from '../../assets/clock.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 
 const Current = () => {
     const navigate = useNavigate();
-    const { currentOrder } = useAuth();
+    const { currentOrder, setCardButtonVisible, userData } = useAuth();
+
     const goBack = () => {
         navigate(-1);
     };
+
     const goToHome = () => {
+        setCardButtonVisible(false);
         navigate('/home');
     };
+
 
     return (
         <div className='current relative m-6 flex flex-col text-[14px] gap-8'>
@@ -76,7 +80,7 @@ const Current = () => {
                 )
             }
 
-            <button onClick={goToHome} className='current__button bg-yellow-300 py-2 rounded-md font-semibold'>Return home</button>
+            <button onClick={goToHome} className='current__button bg-yellow-300 py-2 rounded-md font-semibold'>Confirm delivery</button>
         </div>
     );
 };

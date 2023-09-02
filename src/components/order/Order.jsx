@@ -13,7 +13,7 @@ const Order = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userCards, setUserCards] = useState([]);
-    const { userData, addOrderToUser } = useAuth();
+    const { userData, addOrderToUser, setCardButtonVisible } = useAuth();
     const { state: locationState = {} } = location;
     const { dish, selectedIngredients, initialQuantity } = locationState;
     const delivery = 7000;
@@ -62,8 +62,8 @@ const Order = () => {
         try {
 
             await addOrderToUser(orderData);
-
-            navigate('/current');
+            setCardButtonVisible(true);
+            navigate('/home');
 
         } catch (error) {
             console.error('Error al registrar el pedido en Firestore:', error);
@@ -98,7 +98,7 @@ const Order = () => {
                     <div className='flex justify-between'>
                         <div className='flex gap-4'>
                             <img className='object-contain w-5' src={ubication} alt="" />
-                            <p>882 Well St, New-York</p>
+                            <p className='flex gap-1 text-[14px] font-bold'>{userData && userData.address}</p>
                         </div>
                         <img className='object-contain' src={next} alt="" />
                     </div>
