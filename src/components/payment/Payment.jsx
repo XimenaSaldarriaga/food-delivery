@@ -8,7 +8,7 @@ import { useAuth, getCardsForUserByEmail } from '../../context/authContext';
 import './payment.scss'
 
 const Payment = () => {
-  const { userData } = useAuth();
+  const { userData, deleteCard } = useAuth();
   const navigate = useNavigate();
   const [cardData, setCardData] = useState([]);
 
@@ -33,6 +33,19 @@ const Payment = () => {
     navigate('/profile');
   };
 
+  const handleDeleteCard = async (cardNumber) => {
+    if (userData) {
+      const userEmail = userData.email;
+      try {
+        await deleteCard(userEmail, cardNumber);
+        const updatedCards = cardData.filter((card) => card.cardNumber !== cardNumber);
+        setCardData(updatedCards);
+      } catch (error) {
+        console.error('Error deleting card:', error);
+      }
+    }
+  };
+
   return (
     <div className='payment flex flex-col gap-16 relative mx-6 my-10'>
       <img className='object-contain w-2 absolute top-1 left-2' src={back} alt='' onClick={goProfile} />
@@ -51,7 +64,12 @@ const Payment = () => {
                 )}
                 <span>{card.cardNumber}</span>
               </div>
-              <img className='object-contain w-4' src={del} alt='Eye' />
+              <img
+                className='object-contain w-4 cursor-pointer'
+                src={del}
+                alt='Delete'
+                onClick={() => handleDeleteCard(card.cardNumber)}
+              />
             </div>
           ))}
         </div>
@@ -67,3 +85,4 @@ const Payment = () => {
 };
 
 export default Payment;
+
