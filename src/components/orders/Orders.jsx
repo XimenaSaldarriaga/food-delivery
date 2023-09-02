@@ -14,6 +14,7 @@ const Orders = () => {
         if (userData && userData.email) {
             getOrdersForUserByEmail(userData.email)
                 .then((orders) => {
+                    orders.sort((a, b) => b.dateOrder - a.dateOrder);
                     setUserOrders(orders);
                 })
                 .catch((error) => {
