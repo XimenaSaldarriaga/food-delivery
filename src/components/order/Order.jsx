@@ -27,8 +27,17 @@ const Order = () => {
     };
 
     const handleQuantityChange = (amount) => {
-        setQuantity(prevQuantity => Math.max(1, prevQuantity + amount));
+        const newQuantity = quantity + amount;
+
+        if (newQuantity >= 0) {
+            setQuantity(newQuantity);
+        }
+
+        if (newQuantity === 0) {
+            setSelectedPaymentMethod(null);
+        }
     };
+
 
     const AdditionalIngredients = () => {
         const selectedIngredientsCount = Object.values(selectedIngredients).filter(Boolean).length;
@@ -88,6 +97,7 @@ const Order = () => {
         }
     }, [userData]);
 
+
     return (
         <div className='order relative flex flex-col gap-[4rem] m-6 text-[14px] font-semibold'>
 
@@ -117,7 +127,7 @@ const Order = () => {
                                     onClick={() => handlePaymentMethodSelect(card.cardName)}
                                 >
                                     <img
-                                    className='w-6'
+                                        className='w-6'
                                         src={card.cardName.toLowerCase() === 'visa' ? visa : master}
                                         alt=''
                                     />
@@ -134,20 +144,22 @@ const Order = () => {
                     </div>
                 </div>
 
-                <div>
-                    <div className='flex justify-between items-center'>
-                        <div className='flex gap-4 items-center '>
-                            <img className='w-[44px] h-[44px] object-cover rounded-md' src={dish?.image} alt={dish?.name} />
-                            <div className='bg-gray-100 w-[40px] flex justify-center gap-4 px-8 rounded-[10px] text-[12px]'>
-                                <button onClick={() => handleQuantityChange(-1)}>-</button>
-                                <span>{quantity}</span>
-                                <button onClick={() => handleQuantityChange(1)}>+</button>
+                {quantity > 0 && (
+                    <div>
+                        <div className='flex justify-between items-center'>
+                            <div className='flex gap-4 items-center '>
+                                <img className='w-[44px] h-[44px] object-cover rounded-md' src={dish?.image} alt={dish?.name} />
+                                <div className='bg-gray-100 w-[40px] flex justify-center gap-4 px-8 rounded-[10px] text-[12px]'>
+                                    <button onClick={() => handleQuantityChange(-1)}>-</button>
+                                    <span>{quantity}</span>
+                                    <button onClick={() => handleQuantityChange(1)}>+</button>
+                                </div>
+                                <span>{dish?.name}</span>
                             </div>
-                            <span>{dish?.name}</span>
+                            <span className='text-gray-400'>{`$ ${dish?.price.toFixed(2)}`}</span>
                         </div>
-                        <span className='text-gray-400'>{`$ ${dish?.price.toFixed(2)}`}</span>
                     </div>
-                </div>
+                )}
 
                 <div className='flex flex-col gap-2'>
                     <h2 className='text-[20px]'>Note</h2>
@@ -173,11 +185,15 @@ const Order = () => {
                     <span>Total</span>
                     <span className='text-[18px]'>$ {totalOrder} </span>
                 </div>
-                <button
-                    className={`bg-${isOrderButtonDisabled ? 'yellow-100' : 'yellow-300'}  w-[100%] rounded-md p-2`}
-                    disabled={isOrderButtonDisabled}
-                    onClick={goToHome}>Order
-                </button>
+                <div className='order relative flex flex-col gap-[4rem] m-6 text-[14px] font-semibold'>
+                    <button
+                        className={`bg-${isOrderButtonDisabled || quantity === 0 ? 'yellow-100' : 'yellow-300'}  w-[100%] rounded-md p-2`}
+                        disabled={isOrderButtonDisabled || quantity === 0}
+                        onClick={goToHome}
+                    >
+                        {quantity === 0 ? 'No products added' : 'Order'}
+                    </button>
+                </div>
             </div>
         </div>
     )
