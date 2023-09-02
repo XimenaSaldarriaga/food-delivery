@@ -16,7 +16,10 @@ const ProfileEdit = () => {
     address: userData ? userData.address : '',
   });
 
-  const [profileImg, setProfileImg] = useState(userData ? userData.profileImg : '');
+  const [profileImg, setProfileImg] = useState(() => {
+    const storedUserData = JSON.parse(localStorage.getItem('userData'));
+    return storedUserData ? storedUserData.profileImg : (userData ? userData.profileImg : '');
+  });
   const [isEditing, setIsEditing] = useState(false);
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
@@ -77,13 +80,16 @@ const ProfileEdit = () => {
   };
 
   const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const newProfileImgUrl = await uploadFile(file);
-      setProfileImg(newProfileImgUrl);
-      fileInputRef.current.value = null;
-    }
-  };
+  const file = e.target.files[0];
+  if (file) {
+    const newProfileImgUrl = await uploadFile(file);
+    setProfileImg(newProfileImgUrl);
+    setUserData({ ...userData, profileImg: newProfileImgUrl });
+    localStorage.setItem('userData', JSON.stringify({ ...userData, profileImg: newProfileImgUrl }));
+
+    fileInputRef.current.value = null;
+  }
+};
 
   return (
     <div className='profileEdit flex flex-col gap-6 my-10 mx-6'>
