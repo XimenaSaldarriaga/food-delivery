@@ -1,7 +1,7 @@
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail  } from 'firebase/auth';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { app } from '../firebase';
-import { getFirestore, collection, doc, updateDoc, query, where, getDocs, addDoc, deleteDoc } from "firebase/firestore";
+import { getFirestore, collection, doc, updateDoc, query, where, getDocs, addDoc, deleteDoc, setDoc, getDoc  } from "firebase/firestore";
 import { signInWithEmailAndPassword } from '../firebase';
 import { setIsAuthenticated } from '../redux/taskSlice';
 import { useDispatch } from 'react-redux';
@@ -235,6 +235,51 @@ export function AuthProvider({ children }) {
     }
   };
 
+
+  const signInWithGoogle = async () => {
+    try {
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      const email = user.email;
+      const displayName = user.displayName;
+      const photoURL = user.photoURL;
+      const userDocRef = doc(db, 'users', user.uid);
+      const existingUserDoc = await getDoc(userDocRef);
+  
+      if (existingUserDoc.exists()) {
+        const userData = existingUserDoc.data();
+        setUserData(userData);
+        localStorage.setItem('userData', JSON.stringify(userData));
+        console.log('User logged in with Google successfully');
+      } else {
+        await setDoc(userDocRef, {
+          email: email,
+          name: displayName,
+          profileImg: photoURL,
+        });
+  
+        const userData = {
+          email: email,
+          name: displayName,
+          profileImg: photoURL,
+        };
+        setUserData(userData);
+        localStorage.setItem('userData', JSON.stringify(userData));
+        console.log('User logged in with Google successfully and account created in Firestore');
+      }
+  
+      return true;
+    } catch (error) {
+      console.error('Error logging in with Google:', error);
+      return false;
+    }
+  };
+  
+
+
+
   const signOut = () => {
     localStorage.removeItem('userData');
     localStorage.removeItem('isAuthenticated');
@@ -366,7 +411,7 @@ export function AuthProvider({ children }) {
   
 
   return (
-    <authContext.Provider value={{ isCardButtonVisible, setCardButtonVisible, signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser, currentOrder, deleteCard}}>
+    <authContext.Provider value={{ isCardButtonVisible, setCardButtonVisible, signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser, currentOrder, deleteCard, signInWithGoogle}}>
       {children}
     </authContext.Provider>
   );
