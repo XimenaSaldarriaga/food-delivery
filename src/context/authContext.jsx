@@ -141,6 +141,28 @@ export function updateAddress(userEmail, newAddress) {
     });
 }
 
+export function updateProfileImage(userEmail, newProfileImg) {
+  const usersCollectionRef = collection(db, "users");
+  const queryUser = query(usersCollectionRef, where("email", "==", userEmail));
+
+  return getDocs(queryUser)
+    .then((querySnapshot) => {
+      if (!querySnapshot.empty) {
+        const userDoc = querySnapshot.docs[0];
+        const userRef = doc(db, "users", userDoc.id);
+
+        return updateDoc(userRef, {
+          profileImg: newProfileImg,
+        });
+      } else {
+        throw new Error("Usuario no encontrado");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al actualizar la dirección:", error);
+      throw error;
+    });
+}
 
 export function AuthProvider({ children }) {
   const db = getFirestore();
