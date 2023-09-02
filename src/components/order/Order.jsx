@@ -22,6 +22,7 @@ const Order = () => {
     const [quantity, setQuantity] = useState(initialQuantityFromState);
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
     const delivery = quantity === 0 ? 0 : 7000;
+    const [note, setNote] = useState("");
 
     const handleBackClick = () => {
         navigate(-1);
@@ -73,6 +74,7 @@ const Order = () => {
             total: totalProducts,
             totalCost: totalOrder,
             dateOrder: currentTimestamp,
+            note: note,
         };
 
         try {
@@ -102,6 +104,10 @@ const Order = () => {
                 });
         }
     }, [userData]);
+
+    const handleNoteChange = (event) => {
+        setNote(event.target.value);
+    };
 
 
     return (
@@ -169,7 +175,13 @@ const Order = () => {
 
                 <div className='flex flex-col gap-2'>
                     <h2 className='text-[20px]'>Note</h2>
-                    <input className='border-[1px] rounded-md p-2 border-gray-400 w-[100%] ' type="text" placeholder='Write something' />
+                    <input
+                        className='border-[1px] rounded-md p-2 border-gray-400 w-[100%]'
+                        type="text"
+                        placeholder='Write something'
+                        value={note}
+                        onChange={handleNoteChange}
+                    />
                 </div>
             </div>
 
