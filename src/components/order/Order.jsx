@@ -51,8 +51,10 @@ const Order = () => {
             menuImage: dish?.image,
             menuName: dish?.name,
             pricePerItem: dish?.price,
+            deliveryTime: dish?.time, 
             quantity: quantity,
             deliveryCost: delivery,
+            total: totalProducts, 
             totalCost: totalOrder,
             dateOrder: currentTimestamp,
         };
