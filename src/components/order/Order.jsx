@@ -4,6 +4,7 @@ import back from '../../assets/Back.png';
 import next from '../../assets/Next.png';
 import ubication from '../../assets/Location.png';
 import master from '../../assets/master.png';
+import visa from '../../assets/visa.png';
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuth, getCardsForUserByEmail } from '../../context/authContext';
 
@@ -51,10 +52,10 @@ const Order = () => {
             menuImage: dish?.image,
             menuName: dish?.name,
             pricePerItem: dish?.price,
-            deliveryTime: dish?.time, 
+            deliveryTime: dish?.time,
             quantity: quantity,
             deliveryCost: delivery,
-            total: totalProducts, 
+            total: totalProducts,
             totalCost: totalOrder,
             dateOrder: currentTimestamp,
         };
@@ -108,27 +109,30 @@ const Order = () => {
                     <h2 className='text-[20px]'>Payment</h2>
 
                     <div className='flex gap-4'>
-                    {userCards.length > 0 && (
-                        userCards.map((card, index) => (
-                            <button
-                                key={index}
-                                className={`bg-${selectedPaymentMethod === card.cardName ? 'yellow-300' : 'gray-100'} flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
-                                onClick={() => handlePaymentMethodSelect(card.cardName)}
-                            >
-                                <img src={master} alt='' />
-                                {card.cardName}
-                            </button>
-                        ))
-                    )}
-                    <button
-                        className={`bg-gray-100 flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
-                        onClick={goToCard}
-                    >
-                        Add New Card
-                    </button>
+                        {userCards.length > 0 && (
+                            userCards.map((card, index) => (
+                                <button
+                                    key={index}
+                                    className={`bg-${selectedPaymentMethod === card.cardName ? 'yellow-300' : 'gray-100'} flex gap-2 rounded-md items-center text-[10px] w-[150px] justify-center`}
+                                    onClick={() => handlePaymentMethodSelect(card.cardName)}
+                                >
+                                    <img
+                                    className='w-6'
+                                        src={card.cardName.toLowerCase() === 'visa' ? visa : master}
+                                        alt=''
+                                    />
+                                    {card.cardName}
+                                </button>
+                            ))
+                        )}
+                        <button
+                            className={`bg-gray-100 flex gap-2 rounded-md py-2 items-center text-[10px] w-[150px] justify-center`}
+                            onClick={goToCard}
+                        >
+                            Add New Card
+                        </button>
+                    </div>
                 </div>
-                </div>
-
 
                 <div>
                     <div className='flex justify-between items-center'>
