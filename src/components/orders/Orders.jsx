@@ -4,6 +4,7 @@ import right from '../../assets/ArrowRight.png';
 import Footer from '../footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, getOrdersForUserByEmail } from '../../context/authContext';
+import chef from '../../assets/chef.png';
 
 const Orders = () => {
     const navigate = useNavigate();
@@ -32,6 +33,7 @@ const Orders = () => {
             {userOrders.map((historyItem, index) => (
                 <div key={index} onClick={() => goOrder(historyItem.orderId)} className='flex justify-between order-item'>
                     <div className='flex gap-5'>
+                        <img src={historyItem.menuImage} alt="" className='menuImg' />
                         <div className='flex flex-col'>
                             <span className='text-[14px] font-semibold'>{historyItem.restaurantName}</span>
                             <span className='text-[14px] text-gray-400'>$ {historyItem.totalCost.toFixed(2)}</span>

@@ -38,10 +38,11 @@ const History = () => {
     return (
         <div className='history flex flex-col m-6 relative text-[14px] gap-[4rem]'>
             <img onClick={goBack} className='w-2 absolute object-contain top-1' src={back} alt="" />
-            <h1 className='self-center font-semibold'>26.11.2022</h1>
 
             {orderDetails && (
+
                 <div className='flex flex-col gap-10'>
+                    <h1 className='self-center font-semibold'>{orderDetails.dateOrder.toDate().toLocaleString()}</h1>
                     <div className='flex justify-between'>
                         <div className='flex gap-2'>
                             <span>{`${orderDetails.quantity}x`}</span>
