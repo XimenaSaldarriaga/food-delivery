@@ -4,7 +4,6 @@ import right from '../../assets/ArrowRight.png';
 import Footer from '../footer/Footer';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, getOrdersForUserByEmail } from '../../context/authContext';
-import chef from '../../assets/chef.png';
 
 const Orders = () => {
     const navigate = useNavigate();
