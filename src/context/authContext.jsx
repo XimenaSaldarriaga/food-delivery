@@ -247,7 +247,6 @@ export function AuthProvider({ children }) {
 
         if (signInMethods.includes("password")) {
             setUserData(user);
-            localStorage.setItem('userData', JSON.stringify(user));
             console.log('User logged in with Google successfully');
         } else {
 

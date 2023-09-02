@@ -56,7 +56,6 @@ const Login = () => {
     }
   };
 
-
     const goRegister = () => {
       navigate('./register');
     }
