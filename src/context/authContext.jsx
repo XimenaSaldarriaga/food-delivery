@@ -243,20 +243,36 @@ export function AuthProvider({ children }) {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
         const email = user.email;
+        const displayName = user.displayName;
+        const photoURL = user.photoURL;
         const signInMethods = await fetchSignInMethodsForEmail(auth, email);
 
         if (signInMethods.includes("password")) {
-            setUserData(user);
+            setUserData({
+                email: email,
+                name: displayName,
+                profileImg: photoURL,
+            });
             console.log('User logged in with Google successfully');
         } else {
 
             const userDocRef = doc(db, 'users', user.uid);
             await setDoc(userDocRef, {
                 email: email,
+                name: displayName,
+                profileImg: photoURL,
             });
 
-            setUserData(user);
-            localStorage.setItem('userData', JSON.stringify(user));
+            setUserData({
+                email: email,
+                name: displayName,
+                profileImg: photoURL,
+            });
+            localStorage.setItem('userData', JSON.stringify({
+                email: email,
+                name: displayName,
+                profileImg: photoURL,
+            }));
             console.log('User logged in with Google successfully and account created in Firestore');
         }
 
@@ -266,6 +282,7 @@ export function AuthProvider({ children }) {
         return false;
     }
 };
+
 
 
   const signOut = () => {
