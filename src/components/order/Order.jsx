@@ -13,7 +13,7 @@ const Order = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [userCards, setUserCards] = useState([]);
-    const { userData, addOrderToUser } = useAuth();
+    const { userData, addOrderToUser, setCardButtonVisible } = useAuth();
     const { state: locationState = {} } = location;
     const { dish, selectedIngredients, initialQuantity } = locationState;
     const delivery = 7000;
@@ -62,8 +62,8 @@ const Order = () => {
         try {
 
             await addOrderToUser(orderData);
-
-            navigate('/current');
+            setCardButtonVisible(true);
+            navigate('/home');
 
         } catch (error) {
             console.error('Error al registrar el pedido en Firestore:', error);

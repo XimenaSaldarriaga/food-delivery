@@ -67,10 +67,7 @@ export async function getOrdersForUserByEmail(email) {
   }
 }
 
-
 const db = getFirestore();
-
-
 
 export function updateUserName(userEmail, newName) {
   const usersCollectionRef = collection(db, "users");
@@ -170,7 +167,7 @@ export function AuthProvider({ children }) {
   const [userData, setUserData] = useState(null);
   const [currentOrder, setCurrentOrder] = useState(null); 
   const dispatch = useDispatch();
-
+  const [isCardButtonVisible, setCardButtonVisible] = useState(false);
 
   useEffect(() => {
     fetchRestaurants();
@@ -337,7 +334,7 @@ export function AuthProvider({ children }) {
   
 
   return (
-    <authContext.Provider value={{ signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser, currentOrder}}>
+    <authContext.Provider value={{ isCardButtonVisible, setCardButtonVisible, signUp, fetchRestaurants, restaurants, fetchAllMenus, signIn, userData, setUserData, signOut, addOrderToUser, addCardToUser, currentOrder}}>
       {children}
     </authContext.Provider>
   );
