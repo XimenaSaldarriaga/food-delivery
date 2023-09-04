@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './current.scss';
 import back from '../../assets/back.png';
 import clock from '../../assets/clock.png';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 
 const Current = () => {
     const navigate = useNavigate();
-    const { currentOrder, setCardButtonVisible, userData } = useAuth();
+    const { setCardButtonVisible } = useAuth();
+    const [currentOrder, setCurrentOrder] = useState(null);
 
     const goBack = () => {
         navigate(-1);
@@ -17,6 +18,17 @@ const Current = () => {
         setCardButtonVisible(false);
         navigate('/home');
     };
+
+    useEffect(() => {
+        const storedOrder = localStorage.getItem('currentOrder');
+
+        if (storedOrder) {
+            const orderData = JSON.parse(storedOrder);
+            setCurrentOrder(orderData);
+        } else {
+            navigate('/home');
+        }
+    }, []);
 
 
     return (
