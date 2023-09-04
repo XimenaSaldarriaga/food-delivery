@@ -31,9 +31,7 @@ const Home = () => {
   };
 
   const goCurrent = () => {
-    console.log('Antes de establecer isCardButtonVisible:', isCardButtonVisible);
     setCardButtonVisible(true);
-    console.log('Después de establecer isCardButtonVisible:', isCardButtonVisible);
     navigate('/current');
   };
   
