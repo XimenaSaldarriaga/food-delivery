@@ -18,8 +18,7 @@ const Product = () => {
     const [dishDetails, setDishDetails] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const [selectedIngredients, setSelectedIngredients] = useState({});
-    const initialQuantity = parseInt(localStorage.getItem('selectedQuantity')) || 1;
-    const [quantity, setQuantity] = useState(initialQuantity);
+    const [quantity, setQuantity] = useState(1);
 
     const handleBackClick = () => {
         if (restaurantId && restaurantName) {
