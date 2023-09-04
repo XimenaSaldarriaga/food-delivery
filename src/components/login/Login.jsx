@@ -24,7 +24,6 @@ const Login = () => {
       dispatch(setIsAuthenticated(true));
       navigate('/home');
       localStorage.setItem('isAuthenticated', true);
-      console.log('User logged in successfully');
       Swal.fire({
         text: 'Welcome!',
         confirmButtonColor: '#FFE031',

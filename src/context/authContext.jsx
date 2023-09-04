@@ -188,7 +188,6 @@ export function AuthProvider({ children }) {
       });
       setRestaurants(restaurantData);
 
-      console.log("Restaurant data fetched:", restaurantData);
     } catch (error) {
       console.error("Error fetching restaurants:", error);
     }
@@ -223,7 +222,6 @@ export function AuthProvider({ children }) {
         const userDataFromFirestore = userDoc.data();
         setUserData(userDataFromFirestore);
         localStorage.setItem('userData', JSON.stringify(userDataFromFirestore));
-        console.log('User data from Firestore:', userDataFromFirestore);
         return true;
       } else {
         console.log('User data not found in Firestore');
@@ -276,9 +274,6 @@ export function AuthProvider({ children }) {
       return false;
     }
   };
-  
-
-
 
   const signOut = () => {
     localStorage.removeItem('userData');
@@ -319,8 +314,6 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     fetchAllMenus()
       .then(menus => {
-        console.log('All Menus:', menus);
-
       })
       .catch(error => {
         console.error('Error fetching all menus:', error);
@@ -341,7 +334,6 @@ export function AuthProvider({ children }) {
           const ordersCollectionRef = collection(db, 'users', userId, 'orders');
           await addDoc(ordersCollectionRef, orderData);
           setCurrentOrder(orderData);
-          console.log('Order added to user successfully');
         } else {
           console.error('User not found in Firestore');
         }
@@ -365,12 +357,11 @@ export function AuthProvider({ children }) {
           const userId = userDoc.id;
           const cardsCollectionRef = collection(db, 'users', userId, 'cards');
           await addDoc(cardsCollectionRef, cardData);
-          console.log('Card added to user successfully');
         } else {
           console.error('User not found in Firestore');
         }
       } catch (error) {
-        console.error('Error adding card to user:', error);
+        console.error(error);
       }
     } else {
       console.error('User not authenticated');
@@ -392,10 +383,7 @@ export function AuthProvider({ children }) {
         if (!cardQuerySnapshot.empty) {
           const cardId = cardQuerySnapshot.docs[0].id;
           const cardRef = doc(cardsCollectionRef, cardId);
-          
-          // Eliminar la tarjeta del usuario
           await deleteDoc(cardRef);
-          console.log('Card deleted successfully');
         } else {
           console.error('Card not found in Firestore');
         }

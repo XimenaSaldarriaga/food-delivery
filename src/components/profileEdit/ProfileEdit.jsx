@@ -73,7 +73,6 @@ const ProfileEdit = () => {
             localStorage.setItem('userData', JSON.stringify(updatedUserData));
 
             setIsEditing(false);
-            console.log('Datos actualizados con éxito:', updatedUserData);
         } catch (error) {
             console.error('Error al actualizar los datos:', error);
         }

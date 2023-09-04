@@ -36,7 +36,6 @@ const Restaurant = () => {
                         uniqueCategories.add(dish.category);
                     });
                     setUniqueCategoriesArray(["All", ...uniqueCategories]);
-                    console.log(menuData)
                 } else {
                     console.log('No such document!');
                 }
@@ -63,7 +62,6 @@ const Restaurant = () => {
     const filteredMenuData = selectedCategory === "All" ? menuData : menuData.filter((dish) => dish.category === selectedCategory);
 
         const handleDishClick = (dishId) => {
-            console.log("Dish ID:", dishId); 
         navigate(`/product?restaurantId=${id}&restaurantName=${selectedRestaurant.name}&dishId=${dishId}`);
     };
     

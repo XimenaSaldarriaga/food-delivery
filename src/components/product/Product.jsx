@@ -99,7 +99,6 @@ const Product = () => {
 
     useEffect(() => {
         localStorage.setItem('selectedQuantity', quantity.toString());
-        console.log('Cantidad guardada en el almacenamiento local:', quantity);
     }, [quantity]);
 
     const handleOrderClick = () => {
