@@ -34,6 +34,10 @@ const Home = () => {
     setCardButtonVisible(true);
     navigate('/current');
   };
+
+  useEffect(() => {
+    localStorage.setItem('isCardButtonVisible', isCardButtonVisible.toString());
+  }, [isCardButtonVisible]);
   
 
   const settings = {

@@ -82,6 +82,7 @@ const Order = () => {
 
             await addOrderToUser(orderData);
             setCardButtonVisible(true);
+            localStorage.setItem('currentOrder', JSON.stringify(orderData));
             navigate('/home');
 
         } catch (error) {

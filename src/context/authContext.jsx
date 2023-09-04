@@ -167,7 +167,10 @@ export function AuthProvider({ children }) {
   const [userData, setUserData] = useState(null);
   const [currentOrder, setCurrentOrder] = useState(null); 
   const dispatch = useDispatch();
-  const [isCardButtonVisible, setCardButtonVisible] = useState(false);
+  const [isCardButtonVisible, setCardButtonVisible] = useState(() => {
+    const storedValue = localStorage.getItem('isCardButtonVisible');
+    return storedValue ? JSON.parse(storedValue) : false;
+  });
 
   useEffect(() => {
     fetchRestaurants();

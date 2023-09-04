@@ -19,10 +19,11 @@ import { useAuth } from '../../context/authContext';
 const Profile = () => {
 
     const navigate = useNavigate();
-    const { userData, signOut } = useAuth(); 
+    const { userData, signOut, setCardButtonVisible } = useAuth(); 
 
     const handleLogout = () => {
         signOut();
+        setCardButtonVisible(false);
         navigate('/');
       };
       const handleEditProfile = () => {
